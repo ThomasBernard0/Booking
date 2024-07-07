@@ -1,5 +1,11 @@
+import Appointment from "./Pages/Appointment";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <Appointment />
+    </>
+  );
 }
 
 export default App;
