@@ -1,0 +1,7 @@
+.sidemenu-wrapper{
+    padding: 30px;
+    width:30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
