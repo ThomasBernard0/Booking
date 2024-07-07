@@ -1,0 +1,6 @@
+.wrapper {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    height: calc(98vh - 40px);
+}

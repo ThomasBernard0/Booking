@@ -1,4 +1,4 @@
-import Appointment from "./Pages/Appointment";
+import Appointment from "./Pages/Appointment/Appointment";
 
 function App() {
   return (
