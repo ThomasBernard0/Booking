@@ -2,12 +2,10 @@ import React from "react";
 
 import "./Sidemenu.css";
 
-export default function Sidemenu({ show }: any) {
+export default function Sidemenu() {
   return (
-    <div className={`right-div ${show ? "show" : ""}`}>
-      <div className="sidemenu-wrapper">
-        <div>TITLE</div>
-      </div>
+    <div className="sidemenu-wrapper">
+      <div>TITLE</div>
     </div>
   );
 }
