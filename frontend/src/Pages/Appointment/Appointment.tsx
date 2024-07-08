@@ -4,10 +4,10 @@ import Sidemenu from "../../Components/Sidemenu/Sidemenu";
 import "./Appointment.css";
 
 export default function Appointment() {
-  const [dateSelected, isDateSelected] = useState<boolean>(true);
+  const [dateSelected, setDateSelected] = useState<Date | null>(null);
   return (
     <div className="appointment-wrapper">
-      <Calendar />
+      <Calendar setDateSelected={setDateSelected} />
       {dateSelected && <Sidemenu />}
     </div>
   );
