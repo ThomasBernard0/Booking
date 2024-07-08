@@ -1,7 +1,18 @@
 .sidemenu-wrapper{
-    padding: 30px;
+    padding: 2rem;
     width:30vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transform: translateX(100%);
+    animation: slideIn 1s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
