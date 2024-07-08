@@ -6,12 +6,15 @@ import interactionPlugin from "@fullcalendar/interaction";
 import frLocale from "@fullcalendar/core/locales/fr";
 import "./Calendar.css";
 
-export default function Calendar({ setDateSelected }: any) {
+type Props = {
+  setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
+};
+
+export default function Calendar({ setDateSelected }: Props) {
   function handleDateSelect(selectInfo: any) {
     let calendarApi = selectInfo.view.calendar;
     setDateSelected(calendarApi.currentData.dateSelection.range.start);
   }
-
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

@@ -8,7 +8,7 @@ export default function Appointment() {
   return (
     <div className="appointment-wrapper">
       <Calendar setDateSelected={setDateSelected} />
-      {dateSelected && <Sidemenu />}
+      {dateSelected && <Sidemenu dateSelected={dateSelected} />}
     </div>
   );
 }
