@@ -1,20 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./Sidemenu.css";
 
 type Props = {
   dateSelected: Date | null;
+  scheduleSelected: Set<string>;
+  setScheduleSelected: any;
 };
 
-export default function Sidemenu({ dateSelected }: Props) {
+export default function Sidemenu({
+  dateSelected,
+  scheduleSelected,
+  setScheduleSelected,
+}: Props) {
+  useEffect(() => {
+    console.log(scheduleSelected);
+  }, [scheduleSelected]);
   const schedule = generateSchedule();
+  const addingSchedule = (schedule: any) => {
+    setScheduleSelected((prevSet: any) => {
+      const newSet = new Set(prevSet);
+      if (newSet.has(schedule)) {
+        newSet.delete(schedule);
+      } else {
+        newSet.add(schedule);
+      }
+      return newSet;
+    });
+  };
   return (
     <div className="sidemenu-wrapper">
       <div className="title">{formatDateToFrench(dateSelected)}</div>
       <div className="sidemenu-container">
         <div className="button-container">
           {schedule.map((val) => (
-            <button className="schedule">{val}</button>
+            <button
+              key={dateSelected + val}
+              className={`schedule ${
+                scheduleSelected.has(dateSelected + val) ? "selected" : ""
+              }`}
+              onClick={() => addingSchedule(dateSelected + val)}
+            >
+              {val}
+            </button>
           ))}
         </div>
       </div>
