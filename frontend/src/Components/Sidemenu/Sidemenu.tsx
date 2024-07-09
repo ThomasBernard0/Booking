@@ -46,7 +46,9 @@ export default function Sidemenu({
           ))}
         </div>
       </div>
-      <div className="shopping-cart">shopping cart</div>
+      <div className="shopping-cart">
+        shopping cart : {scheduleSelected.size} selected
+      </div>
     </div>
   );
 }
