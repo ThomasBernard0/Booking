@@ -1,9 +1,9 @@
 .sidemenu-wrapper{
     margin: 2rem;
-    margin-top: 5rem;
+    margin-top: 4rem;
     padding: 1rem;
     width: calc(40vh - 20px);
-    height: calc(100vh - 12rem);
+    height: calc(100vh - 10rem);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
@@ -27,6 +27,13 @@
     margin-bottom: 2rem;
 }
 
+.sidemenu-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
 .button-container{
     display: flex;
     flex-direction: column;
@@ -38,7 +45,12 @@
     scrollbar-width: none;
 }
 
-.button{
+.schedule{
     width: 80%;
+    height: 4rem;
+}
+
+.shopping-cart{
+    margin-top: 2rem;
     height: 4rem;
 }

@@ -11,11 +11,14 @@ export default function Sidemenu({ dateSelected }: Props) {
   return (
     <div className="sidemenu-wrapper">
       <div className="title">{formatDateToFrench(dateSelected)}</div>
-      <div className="button-container">
-        {schedule.map((val) => (
-          <button className="button">{val}</button>
-        ))}
+      <div className="sidemenu-container">
+        <div className="button-container">
+          {schedule.map((val) => (
+            <button className="schedule">{val}</button>
+          ))}
+        </div>
       </div>
+      <div className="shopping-cart">shopping cart</div>
     </div>
   );
 }
