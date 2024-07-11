@@ -1,8 +1,13 @@
-import { IsDateString, IsEmail } from 'class-validator';
+import { IsDateString } from 'class-validator';
 
-export class AppointmentDto {
+export class ScheduleDto {
   @IsDateString()
   date: Date;
 
   booked: boolean;
+
+  constructor(date: Date, booked: boolean) {
+    this.date = date;
+    this.booked = booked;
+  }
 }

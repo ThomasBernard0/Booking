@@ -1,7 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { AppointmentService } from 'src/services/appointment.service';
-import { Appointment } from '@prisma/client';
 import { AppointmentDto } from 'src/dto/appointment.dto';
+import { ScheduleDto } from 'src/dto/schedule.dto';
 
 @Controller('appointment')
 export class AppointmentController {
@@ -10,5 +10,10 @@ export class AppointmentController {
   @Post('create-list')
   async create(@Body() appointmentListDto: AppointmentDto[]): Promise<void> {
     await this.appointmentService.createMany(appointmentListDto);
+  }
+
+  @Get('schedules-list')
+  async getAllSchedule(): Promise<ScheduleDto[]> {
+    return this.appointmentService.getAllSchedules();
   }
 }

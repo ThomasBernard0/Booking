@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Appointment } from '@prisma/client';
 import { AppointmentDto } from 'src/dto/appointment.dto';
+import { ScheduleDto } from 'src/dto/schedule.dto';
 
 @Injectable()
 export class AppointmentService {
@@ -17,5 +18,14 @@ export class AppointmentService {
       });
     });
     await Promise.all(createManyPromises);
+  }
+
+  async getAllSchedules(): Promise<ScheduleDto[]> {
+    const schedulesList: ScheduleDto[] = [];
+    const appointmentsList = await this.prisma.appointment.findMany();
+    appointmentsList.forEach((appointment) => {
+      schedulesList.push(new ScheduleDto(appointment.date, true));
+    });
+    return schedulesList;
   }
 }
