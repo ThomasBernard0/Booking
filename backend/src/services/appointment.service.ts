@@ -7,12 +7,15 @@ import { AppointmentDto } from 'src/dto/appointment.dto';
 export class AppointmentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(appointmentDto: AppointmentDto): Promise<Appointment> {
-    return this.prisma.appointment.create({
-      data: {
-        date: new Date(appointmentDto.date),
-        email: appointmentDto.email,
-      },
+  async createMany(appointmentListDto: AppointmentDto[]): Promise<void> {
+    const createManyPromises = appointmentListDto.map(async (appointment) => {
+      await this.prisma.appointment.create({
+        data: {
+          date: new Date(appointment.date),
+          email: appointment.email,
+        },
+      });
     });
+    await Promise.all(createManyPromises);
   }
 }

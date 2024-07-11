@@ -7,8 +7,8 @@ import { AppointmentDto } from 'src/dto/appointment.dto';
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
-  @Post()
-  async create(@Body() appointmentDto: AppointmentDto): Promise<Appointment> {
-    return this.appointmentService.create(appointmentDto);
+  @Post('create-list')
+  async create(@Body() appointmentListDto: AppointmentDto[]): Promise<void> {
+    await this.appointmentService.createMany(appointmentListDto);
   }
 }
