@@ -14,8 +14,8 @@ export class AppointmentService {
     const createManyPromises = appointmentListDto.map(async (appointment) => {
       await this.prisma.appointment.create({
         data: {
-          startDate: new Date(appointment.startDate),
-          endDate: new Date(appointment.endDate),
+          startDate: appointment.startDate,
+          endDate: appointment.endDate,
           email: appointment.email,
         },
       });
