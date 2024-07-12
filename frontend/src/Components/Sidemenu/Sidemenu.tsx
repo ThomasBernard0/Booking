@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-
 import "./Sidemenu.css";
+import { Button, Card } from "@mui/material";
+import { useSchedules } from "../../queries";
 
 type Props = {
   dateSelected: Date | null;
@@ -13,10 +14,7 @@ export default function Sidemenu({
   scheduleSelected,
   setScheduleSelected,
 }: Props) {
-  useEffect(() => {
-    console.log(scheduleSelected);
-  }, [scheduleSelected]);
-  const schedule = generateSchedule();
+  const { data, isLoading } = useSchedules("12-12-2024", dateSelected);
   const addingSchedule = (schedule: any) => {
     setScheduleSelected((prevSet: any) => {
       const newSet = new Set(prevSet);
@@ -28,28 +26,21 @@ export default function Sidemenu({
       return newSet;
     });
   };
+  if (isLoading) return <div>Loading</div>;
   return (
-    <div className="sidemenu-wrapper">
+    <Card className="sidemenu-wrapper">
       <div className="title">{formatDateToFrench(dateSelected)}</div>
       <div className="sidemenu-container">
         <div className="button-container">
-          {schedule.map((val) => (
-            <button
-              key={dateSelected + val}
-              className={`schedule ${
-                scheduleSelected.has(dateSelected + val) ? "selected" : ""
-              }`}
-              onClick={() => addingSchedule(dateSelected + val)}
-            >
-              {val}
-            </button>
+          {data.map((val) => (
+            <Button>test</Button>
           ))}
         </div>
       </div>
       <div className="shopping-cart">
         shopping cart : {scheduleSelected.size} selected
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -63,12 +54,4 @@ const formatDateToFrench = (date: Date | null): string => {
   };
   const frenchDate = date.toLocaleDateString("fr-FR", options);
   return frenchDate.charAt(0).toUpperCase() + frenchDate.slice(1);
-};
-
-const generateSchedule = (): string[] => {
-  const scheduleArray = [];
-  for (let i = 8; i <= 20; i += 2) {
-    scheduleArray.push(i + "h - " + (i + 2).toString() + "h");
-  }
-  return scheduleArray;
 };
