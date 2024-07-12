@@ -40,15 +40,3 @@ export default function Sidemenu({
     </Card>
   );
 }
-
-const formatDateToFrench = (date: Date | null): string => {
-  if (date == null) return "";
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  const frenchDate = date.toLocaleDateString("fr-FR", options);
-  return frenchDate.charAt(0).toUpperCase() + frenchDate.slice(1);
-};
