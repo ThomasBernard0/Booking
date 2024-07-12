@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
@@ -12,7 +12,7 @@ import { Schedule } from "../../types/schedule";
 type Props = {
   dateSelected: Date | null;
   scheduleSelected: Set<Schedule>;
-  setScheduleSelected: any;
+  setScheduleSelected: React.Dispatch<React.SetStateAction<Set<Schedule>>>;
 };
 
 export default function Sidemenu({
@@ -21,8 +21,8 @@ export default function Sidemenu({
   setScheduleSelected,
 }: Props) {
   const { data, isLoading } = useSchedules(dateSelected);
-  const addingSchedule = (schedule: any) => {
-    setScheduleSelected((prevSet: any) => {
+  const addingSchedule = (schedule: Schedule) => {
+    setScheduleSelected((prevSet: Set<Schedule>) => {
       const newSet = new Set(prevSet);
       if (newSet.has(schedule)) {
         newSet.delete(schedule);
@@ -46,6 +46,7 @@ export default function Sidemenu({
                     className={`schedule ${
                       scheduleSelected.has(schedule) ? "selected" : ""
                     }`}
+                    onClick={() => addingSchedule(schedule)}
                   >
                     {getHours(schedule.startDate) +
                       " - " +
