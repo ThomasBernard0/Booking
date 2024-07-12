@@ -14,7 +14,7 @@ export default function Sidemenu({
   scheduleSelected,
   setScheduleSelected,
 }: Props) {
-  const { data, isLoading } = useSchedules("12-12-2024", dateSelected);
+  const { data, isLoading } = useSchedules(dateSelected);
   const addingSchedule = (schedule: any) => {
     setScheduleSelected((prevSet: any) => {
       const newSet = new Set(prevSet);

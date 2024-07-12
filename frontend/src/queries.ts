@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { formatDateToDateString } from "./utils/dateUtils";
 
-export function useSchedules(date: string, dateSelected: Date | null) {
+export function useSchedules(dateSelected: Date | null) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>([]);
   useEffect(() => {
@@ -8,6 +9,7 @@ export function useSchedules(date: string, dateSelected: Date | null) {
   }, [dateSelected]);
   async function getSchedules() {
     setIsLoading(true);
+    const date = formatDateToDateString(dateSelected);
     const response = await fetch(
       `http://localhost:3000/appointment/schedules-list?date=${date}`
     );
