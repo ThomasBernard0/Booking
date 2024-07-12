@@ -23,8 +23,7 @@ export class AppointmentService {
     await Promise.all(createManyPromises);
   }
 
-  async getAllSchedules(): Promise<ScheduleDto[]> {
-    const date = '12-12-2024';
+  async getAllSchedules(date: string): Promise<ScheduleDto[]> {
     const appointmentsList = await this.prisma.appointment.findMany();
     const defaultSchedulesList: ScheduleDto[] =
       this.getDefaultSchedulesByDay(date);

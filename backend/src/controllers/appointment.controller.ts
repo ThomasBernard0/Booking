@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { AppointmentService } from 'src/services/appointment.service';
 import { AppointmentDto } from 'src/dto/appointment.dto';
 import { ScheduleDto } from 'src/dto/schedule.dto';
@@ -13,7 +13,7 @@ export class AppointmentController {
   }
 
   @Get('schedules-list')
-  async getAllSchedule(): Promise<ScheduleDto[]> {
-    return this.appointmentService.getAllSchedules();
+  async getAllSchedule(@Query('date') date: string): Promise<ScheduleDto[]> {
+    return this.appointmentService.getAllSchedules(date);
   }
 }
