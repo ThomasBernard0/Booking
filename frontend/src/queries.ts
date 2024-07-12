@@ -7,6 +7,7 @@ export function useSchedules(date: string, dateSelected: Date | null) {
     getSchedules();
   }, [dateSelected]);
   async function getSchedules() {
+    setIsLoading(true);
     const response = await fetch(
       `http://localhost:3000/appointment/schedules-list?date=${date}`
     );

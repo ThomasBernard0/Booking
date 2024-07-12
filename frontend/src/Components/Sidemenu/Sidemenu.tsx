@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
@@ -26,15 +26,12 @@ export default function Sidemenu({
       return newSet;
     });
   };
-  if (isLoading) return <div>Loading</div>;
   return (
     <Card className="sidemenu-wrapper">
       <div className="title">{formatDateToFrench(dateSelected)}</div>
       <div className="sidemenu-container">
         <div className="button-container">
-          {data.map((val) => (
-            <Button>test</Button>
-          ))}
+          {isLoading ? "loading" : data.map((val) => <Button>test</Button>)}
         </div>
       </div>
       <div className="shopping-cart">
