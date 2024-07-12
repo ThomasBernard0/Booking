@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Calendar from "../../Components/Calendar/Calendar";
 import Sidemenu from "../../Components/Sidemenu/Sidemenu";
 import "./Appointment.css";
+import { Schedule } from "../../types/schedule";
 
 export default function Appointment() {
-  const [scheduleSelected, setScheduleSelected] = useState<Set<string>>(
-    new Set<string>()
+  const [scheduleSelected, setScheduleSelected] = useState<Set<Schedule>>(
+    new Set<Schedule>()
   );
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
   return (
