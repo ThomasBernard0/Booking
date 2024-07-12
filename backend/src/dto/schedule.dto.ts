@@ -9,9 +9,9 @@ export class ScheduleDto {
 
   booked: boolean;
 
-  constructor(date: Date, booked: boolean) {
-    this.startDate = date;
-    this.endDate = date;
+  constructor(startDate: Date, endDate: Date, booked: boolean) {
+    this.startDate = startDate;
+    this.endDate = endDate;
     this.booked = booked;
   }
 }
