@@ -1,8 +1,10 @@
 import { IsDateString, IsEmail } from 'class-validator';
 
 export class AppointmentDto {
+  startDate: Date;
+
   @IsDateString()
-  date: Date;
+  endDate: Date;
 
   @IsEmail()
   email: string;

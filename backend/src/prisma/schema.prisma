@@ -8,7 +8,8 @@ datasource db {
 }
 
 model Appointment {
-  id    Int      @id @default(autoincrement())
-  date  DateTime
-  email String
+  id        Int      @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  email     String
 }
