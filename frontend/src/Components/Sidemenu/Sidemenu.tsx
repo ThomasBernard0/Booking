@@ -2,11 +2,12 @@ import React from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
-import { formatDateToFrench } from "../../utils/dateUtils";
+import { formatDateToFrenchLocale } from "../../utils/dateUtils";
+import { Schedule } from "../../types/schedule";
 
 type Props = {
   dateSelected: Date | null;
-  scheduleSelected: Set<string>;
+  scheduleSelected: Set<Schedule>;
   setScheduleSelected: any;
 };
 
@@ -29,10 +30,14 @@ export default function Sidemenu({
   };
   return (
     <Card className="sidemenu-wrapper">
-      <div className="title">{formatDateToFrench(dateSelected)}</div>
+      <div className="title">{formatDateToFrenchLocale(dateSelected)}</div>
       <div className="sidemenu-container">
         <div className="button-container">
-          {isLoading ? "loading" : data.map((val) => <Button>test</Button>)}
+          {isLoading
+            ? "loading"
+            : data.map((val, index) => {
+                return <Button key={}>test</Button>;
+              })}
         </div>
       </div>
       <div className="shopping-cart">

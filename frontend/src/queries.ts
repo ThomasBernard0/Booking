@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { formatDateToDateString } from "./utils/dateUtils";
+import { formatDateToDDMMYYYY } from "./utils/dateUtils";
+import { Schedule } from "./types/schedule";
 
 export function useSchedules(dateSelected: Date | null) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<Schedule[]>([]);
   useEffect(() => {
     getSchedules();
   }, [dateSelected]);
   async function getSchedules() {
     setIsLoading(true);
-    const date = formatDateToDateString(dateSelected);
+    const date = formatDateToDDMMYYYY(dateSelected);
     const response = await fetch(
       `http://localhost:3000/appointment/schedules-list?date=${date}`
     );

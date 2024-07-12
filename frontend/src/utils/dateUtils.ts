@@ -1,12 +1,12 @@
-export function formatDateToDateString(date: Date | null): string {
+export function formatDateToDDMMYYYY(date: Date | null): string {
   if (date == null) return "";
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-  return day + "-" + month + "-" + year;
+  return `${day}-${month}-${year}`;
 }
 
-export function formatDateToFrench(date: Date | null): string {
+export function formatDateToFrenchLocale(date: Date | null): string {
   if (date == null) return "";
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
