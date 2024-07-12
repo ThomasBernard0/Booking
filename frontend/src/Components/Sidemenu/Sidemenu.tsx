@@ -2,6 +2,7 @@ import React from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
+import { formatDateToFrench } from "../../utils/dateUtils";
 
 type Props = {
   dateSelected: Date | null;
