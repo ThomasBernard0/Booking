@@ -2,7 +2,11 @@ import React from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
-import { formatDateToFrenchLocale } from "../../utils/dateUtils";
+import {
+  formatDateToDDMMYYYY,
+  formatDateToFrenchLocale,
+  getHours,
+} from "../../utils/dateUtils";
 import { Schedule } from "../../types/schedule";
 
 type Props = {
@@ -35,8 +39,19 @@ export default function Sidemenu({
         <div className="button-container">
           {isLoading
             ? "loading"
-            : data.map((val, index) => {
-                return <Button key={}>test</Button>;
+            : data.map((schedule, index) => {
+                return (
+                  <Button
+                    key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
+                    className={`schedule ${
+                      scheduleSelected.has(schedule) ? "selected" : ""
+                    }`}
+                  >
+                    {getHours(schedule.startDate) +
+                      " - " +
+                      getHours(schedule.endDate)}
+                  </Button>
+                );
               })}
         </div>
       </div>

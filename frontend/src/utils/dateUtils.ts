@@ -17,3 +17,19 @@ export function formatDateToFrenchLocale(date: Date | null): string {
   const frenchDate = date.toLocaleDateString("fr-FR", options);
   return frenchDate.charAt(0).toUpperCase() + frenchDate.slice(1);
 }
+
+export function getHours(date: Date): string {
+  if (!date) return "";
+  let dateObj: Date;
+  if (typeof date === "string") {
+    dateObj = new Date(date);
+  } else {
+    dateObj = date;
+  }
+  if (isNaN(dateObj.getTime())) {
+    return "";
+  }
+  const hour = dateObj.getUTCHours().toString();
+  const minute = dateObj.getUTCMinutes().toString();
+  return `${hour}:${minute.padStart(2, "0")}`;
+}
