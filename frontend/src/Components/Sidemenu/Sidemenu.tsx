@@ -71,6 +71,7 @@ export default function Sidemenu({
         <Button
           className="payer-button"
           variant="contained"
+          disabled={Object.keys(scheduleSelected).length == 0}
           onClick={() => setOpenRecapModale(true)}
         >
           Payer
