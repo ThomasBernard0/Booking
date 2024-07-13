@@ -40,29 +40,27 @@ export default function Sidemenu({
   return (
     <Card className="sidemenu-wrapper">
       <div className="title">{formatDateToFrenchLocale(dateSelected)}</div>
-      <div className="sidemenu-container">
-        <div className="button-container">
-          {isLoading
-            ? "loading"
-            : data.map((schedule, index) => {
-                return (
-                  <Button
-                    key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
-                    className="schedule"
-                    onClick={() => addingSchedule(schedule)}
-                    variant={
-                      schedule.startDate.toString() in scheduleSelected
-                        ? "contained"
-                        : "outlined"
-                    }
-                  >
-                    {getHours(schedule.startDate) +
-                      " - " +
-                      getHours(schedule.endDate)}
-                  </Button>
-                );
-              })}
-        </div>
+      <div className="button-container">
+        {isLoading
+          ? "loading"
+          : data.map((schedule, index) => {
+              return (
+                <Button
+                  key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
+                  className="schedule"
+                  onClick={() => addingSchedule(schedule)}
+                  variant={
+                    schedule.startDate.toString() in scheduleSelected
+                      ? "contained"
+                      : "outlined"
+                  }
+                >
+                  {getHours(schedule.startDate) +
+                    " - " +
+                    getHours(schedule.endDate)}
+                </Button>
+              );
+            })}
       </div>
       <div className="shopping-cart">
         shopping cart : {Object.keys(scheduleSelected).length} selected
