@@ -1,4 +1,4 @@
-.sidemenu-wrapper{
+.sidemenu-wrapper {
     margin: 2rem;
     margin-top: 4rem;
     padding: 1rem;
@@ -20,13 +20,13 @@
     }
 }
 
-.title{
+.title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
 }
 
-.button-container{
+.button-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,12 +37,12 @@
     scrollbar-width: none;
 }
 
-.schedule{
+.schedule {
     width: 80%;
     height: 4rem;
 }
 
-.shopping-cart{
+.shopping-cart {
     margin-top: 1rem;
     margin-bottom: 2rem;
     height: 4rem;
@@ -53,6 +53,6 @@
     font-size: 20px;
 }
 
-.payer-button{
-    height:3rem;
+.payer-button {
+    height: 3rem;
 }
