@@ -10,7 +10,7 @@ export default function Appointment() {
     [key: string]: Schedule;
   }>({});
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
-  const [openRecapModale, setOpenRecapModale] = React.useState<boolean>(false);
+  const [openRecapModale, setOpenRecapModale] = useState<boolean>(false);
   return (
     <div className="appointment-wrapper">
       <Calendar setDateSelected={setDateSelected} />
@@ -25,6 +25,7 @@ export default function Appointment() {
       <RecapModale
         openRecapModale={openRecapModale}
         setOpenRecapModale={setOpenRecapModale}
+        scheduleSelected={scheduleSelected}
       />
     </div>
   );
