@@ -7,6 +7,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Schedule } from "../../types/schedule";
+import {
+  formatDateToDDMMYYYY,
+  formatDDMMYYYYToFrenchLocale,
+} from "../../utils/dateUtils";
 
 type Props = {
   openRecapModale: boolean;
@@ -32,13 +36,11 @@ export default function recapModale({
     const newMap: recapScheduleMap = {};
     const schedulesList = Object.values(scheduleSelected);
     schedulesList.forEach((schedule) => {
-      if (schedule.startDate.toString() in newMap) {
-        newMap[schedule.startDate.toString()] = [
-          ...newMap[schedule.startDate.toString()],
-          schedule,
-        ];
+      const date = formatDateToDDMMYYYY(schedule.startDate);
+      if (date in newMap) {
+        newMap[date] = [...newMap[date], schedule];
       } else {
-        newMap[schedule.startDate.toString()] = [schedule];
+        newMap[date] = [schedule];
       }
     });
     setRecapScheduleMap(newMap);
@@ -62,7 +64,7 @@ export default function recapModale({
       <DialogContent dividers>
         {Object.keys(recapScheduleMap).map((key) => (
           <div key={key}>
-            <h3>{key}</h3>
+            <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
             <ul>
               {recapScheduleMap[key].map((value, index) => (
                 <li key={`${key}-${index}`}>{value.startDate.toString()}</li>
