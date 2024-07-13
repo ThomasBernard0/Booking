@@ -32,10 +32,14 @@ export default function recapModale({
     const newMap: recapScheduleMap = {};
     const schedulesList = Object.values(scheduleSelected);
     schedulesList.forEach((schedule) => {
-      newMap[schedule.startDate.toString()] = [
-        ...newMap[schedule.startDate.toString()],
-        schedule,
-      ];
+      if (schedule.startDate.toString() in newMap) {
+        newMap[schedule.startDate.toString()] = [
+          ...newMap[schedule.startDate.toString()],
+          schedule,
+        ];
+      } else {
+        newMap[schedule.startDate.toString()] = [schedule];
+      }
     });
     setRecapScheduleMap(newMap);
   }, [openRecapModale]);
