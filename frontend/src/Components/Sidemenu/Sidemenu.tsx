@@ -19,12 +19,14 @@ type Props = {
       [key: string]: Schedule;
     }>
   >;
+  setOpenRecapModale: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Sidemenu({
   dateSelected,
   scheduleSelected,
   setScheduleSelected,
+  setOpenRecapModale,
 }: Props) {
   const { data, isLoading } = useSchedules(dateSelected);
   const addingSchedule = (schedule: Schedule) => {
@@ -66,7 +68,11 @@ export default function Sidemenu({
         <span>
           Créneau(x) sélectionné(s): {Object.keys(scheduleSelected).length}
         </span>
-        <Button className="payer-button" variant="contained">
+        <Button
+          className="payer-button"
+          variant="contained"
+          onClick={() => setOpenRecapModale(true)}
+        >
           Payer
         </Button>
       </div>
