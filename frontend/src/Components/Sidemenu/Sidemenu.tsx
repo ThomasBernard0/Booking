@@ -63,7 +63,12 @@ export default function Sidemenu({
             })}
       </div>
       <div className="shopping-cart">
-        shopping cart : {Object.keys(scheduleSelected).length} selected
+        <span>
+          Créneau(x) sélectionné(s): {Object.keys(scheduleSelected).length}
+        </span>
+        <Button className="payer-button" variant="contained">
+          Payer
+        </Button>
       </div>
     </Card>
   );
