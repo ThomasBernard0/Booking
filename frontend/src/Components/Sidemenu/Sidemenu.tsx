@@ -11,8 +11,14 @@ import { Schedule } from "../../types/schedule";
 
 type Props = {
   dateSelected: Date | null;
-  scheduleSelected: Set<Schedule>;
-  setScheduleSelected: React.Dispatch<React.SetStateAction<Set<Schedule>>>;
+  scheduleSelected: {
+    [key: string]: Schedule;
+  };
+  setScheduleSelected: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: Schedule;
+    }>
+  >;
 };
 
 export default function Sidemenu({
@@ -22,15 +28,14 @@ export default function Sidemenu({
 }: Props) {
   const { data, isLoading } = useSchedules(dateSelected);
   const addingSchedule = (schedule: Schedule) => {
-    setScheduleSelected((prevSet: Set<Schedule>) => {
-      const newSet = new Set(prevSet);
-      if (newSet.has(schedule)) {
-        newSet.delete(schedule);
-      } else {
-        newSet.add(schedule);
-      }
-      return newSet;
-    });
+    const key = schedule.startDate.toString();
+    if (key in scheduleSelected) {
+      const newSchedule = { ...scheduleSelected };
+      delete newSchedule[key];
+      setScheduleSelected(newSchedule);
+    } else {
+      setScheduleSelected({ ...scheduleSelected, [key]: schedule });
+    }
   };
   return (
     <Card className="sidemenu-wrapper">
@@ -43,10 +48,13 @@ export default function Sidemenu({
                 return (
                   <Button
                     key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
-                    className={`schedule ${
-                      scheduleSelected.has(schedule) ? "selected" : ""
-                    }`}
+                    className="schedule"
                     onClick={() => addingSchedule(schedule)}
+                    variant={
+                      schedule.startDate.toString() in scheduleSelected
+                        ? "contained"
+                        : "outlined"
+                    }
                   >
                     {getHours(schedule.startDate) +
                       " - " +
@@ -57,7 +65,7 @@ export default function Sidemenu({
         </div>
       </div>
       <div className="shopping-cart">
-        shopping cart : {scheduleSelected.size} selected
+        shopping cart : {Object.keys(scheduleSelected).length} selected
       </div>
     </Card>
   );

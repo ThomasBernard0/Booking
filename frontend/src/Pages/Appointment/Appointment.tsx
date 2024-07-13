@@ -5,9 +5,9 @@ import "./Appointment.css";
 import { Schedule } from "../../types/schedule";
 
 export default function Appointment() {
-  const [scheduleSelected, setScheduleSelected] = useState<Set<Schedule>>(
-    new Set<Schedule>()
-  );
+  const [scheduleSelected, setScheduleSelected] = useState<{
+    [key: string]: Schedule;
+  }>({});
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
   return (
     <div className="appointment-wrapper">
