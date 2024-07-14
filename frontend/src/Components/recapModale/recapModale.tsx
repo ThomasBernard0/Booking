@@ -10,6 +10,7 @@ import { Schedule } from "../../types/schedule";
 import {
   formatDateToDDMMYYYY,
   formatDDMMYYYYToFrenchLocale,
+  getHours,
 } from "../../utils/dateUtils";
 
 type Props = {
@@ -66,8 +67,12 @@ export default function recapModale({
           <div key={key}>
             <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
             <ul>
-              {recapScheduleMap[key].map((value, index) => (
-                <li key={`${key}-${index}`}>{value.startDate.toString()}</li>
+              {recapScheduleMap[key].map((schedule, index) => (
+                <li key={`${key}-${index}`}>
+                  {getHours(schedule.startDate) +
+                    " - " +
+                    getHours(schedule.endDate)}
+                </li>
               ))}
             </ul>
           </div>
