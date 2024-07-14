@@ -48,13 +48,16 @@ export default function recapModale({
       }
     });
     const sortedMap: recapScheduleMap = {};
-    const sortedKeys = Object.keys(newMap).sort((a, b) => {
-      const dateA = formatDDMMYYYYToDate(a);
-      const dateB = formatDDMMYYYYToDate(b);
-      return dateA.getTime() - dateB.getTime();
-    });
+    const sortedKeys = Object.keys(newMap).sort(
+      (a, b) =>
+        formatDDMMYYYYToDate(a).getTime() - formatDDMMYYYYToDate(b).getTime()
+    );
     for (const key of sortedKeys) {
-      sortedMap[key] = newMap[key];
+      const sortedSchedule = newMap[key].sort(
+        (a, b) =>
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
+      sortedMap[key] = sortedSchedule;
     }
     setRecapScheduleMap(sortedMap);
   }, [openRecapModale]);
