@@ -9,6 +9,7 @@ import {
 import { Schedule } from "../../types/schedule";
 import {
   formatDateToDDMMYYYY,
+  formatDDMMYYYYToDate,
   formatDDMMYYYYToFrenchLocale,
   getHours,
 } from "../../utils/dateUtils";
@@ -45,9 +46,11 @@ export default function recapModale({
       }
     });
     const sortedMap: recapScheduleMap = {};
-    const sortedKeys = Object.keys(newMap).sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    );
+    const sortedKeys = Object.keys(newMap).sort((a, b) => {
+      const dateA = formatDDMMYYYYToDate(a);
+      const dateB = formatDDMMYYYYToDate(b);
+      return dateA.getTime() - dateB.getTime();
+    });
     for (const key of sortedKeys) {
       sortedMap[key] = newMap[key];
     }
