@@ -44,7 +44,14 @@ export default function recapModale({
         newMap[date] = [schedule];
       }
     });
-    setRecapScheduleMap(newMap);
+    const sortedMap: recapScheduleMap = {};
+    const sortedKeys = Object.keys(newMap).sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    );
+    for (const key of sortedKeys) {
+      sortedMap[key] = newMap[key];
+    }
+    setRecapScheduleMap(sortedMap);
   }, [openRecapModale]);
   const handleClose = () => {
     setOpenRecapModale(false);
