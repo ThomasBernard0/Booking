@@ -22,9 +22,9 @@ type Props = {
   };
 };
 
-interface recapScheduleMap {
+type recapScheduleMap = {
   [key: string]: Schedule[];
-}
+};
 
 export default function recapModale({
   openRecapModale,
