@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Schedule } from "../../types/schedule";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
 } from "@mui/material";
-import { Schedule } from "../../types/schedule";
+import { Close } from "@mui/icons-material";
 import {
   formatDateToDDMMYYYY,
   formatDDMMYYYYToDate,
@@ -72,6 +74,18 @@ export default function recapModale({
       }}
     >
       <DialogTitle id="customized-dialog-title">Récapitulatif</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <Close />
+      </IconButton>
       <DialogContent dividers>
         {Object.keys(recapScheduleMap).map((key) => (
           <div key={key}>
