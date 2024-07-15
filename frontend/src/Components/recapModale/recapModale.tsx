@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Schedule } from "../../types/schedule";
+import { usePrice } from "../../queries";
 import {
   Button,
   Dialog,
@@ -9,6 +10,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { FormattedNumber } from "react-intl";
 import {
   formatDateToDDMMYYYY,
   formatDDMMYYYYToDate,
@@ -33,6 +35,10 @@ export default function recapModale({
   setOpenRecapModale,
   scheduleSelected,
 }: Props) {
+  const { price, isLoading } = usePrice(
+    openRecapModale,
+    Object.keys(scheduleSelected).length
+  );
   const [recapScheduleMap, setRecapScheduleMap] = useState<recapScheduleMap>(
     {}
   );
@@ -104,6 +110,11 @@ export default function recapModale({
             </ul>
           </div>
         ))}
+        {isLoading ? (
+          "loading"
+        ) : (
+          <FormattedNumber value={price} style="currency" currency="EUR" />
+        )}
       </DialogContent>
       <DialogActions>
         <Button

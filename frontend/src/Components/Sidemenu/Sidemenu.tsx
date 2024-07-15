@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Sidemenu.css";
 import { Button, Card } from "@mui/material";
 import { useSchedules } from "../../queries";
@@ -28,7 +28,7 @@ export default function Sidemenu({
   setScheduleSelected,
   setOpenRecapModale,
 }: Props) {
-  const { data, isLoading } = useSchedules(dateSelected);
+  const { schedulesList, isLoading } = useSchedules(dateSelected);
   const addingSchedule = (schedule: Schedule) => {
     const key = schedule.startDate.toString();
     if (key in scheduleSelected) {
@@ -45,7 +45,7 @@ export default function Sidemenu({
       <div className="button-container">
         {isLoading
           ? "loading"
-          : data.map((schedule, index) => {
+          : schedulesList.map((schedule, index) => {
               return (
                 <Button
                   key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
