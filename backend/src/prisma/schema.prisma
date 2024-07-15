@@ -11,5 +11,13 @@ model Appointment {
   id        Int      @id @default(autoincrement())
   startDate DateTime
   endDate   DateTime
-  email     String
+  paymentId Int
+  payment   Payment  @relation(fields: [paymentId], references: [id])
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  price       Int
+  email       String
+  Appointment Appointment[]
 }
