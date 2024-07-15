@@ -19,5 +19,5 @@ model Payment {
   id          Int           @id @default(autoincrement())
   price       Int
   email       String
-  Appointment Appointment[]
+  appointment Appointment[]
 }
