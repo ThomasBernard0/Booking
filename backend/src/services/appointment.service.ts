@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Appointment } from '@prisma/client';
 import { AppointmentDto } from 'src/dto/appointment.dto';
 import { ScheduleDto } from 'src/dto/schedule.dto';
 import getDefaultAvailabilityByDay from 'src/utils/availability';
@@ -9,19 +8,6 @@ import { createDateTime, createDateTimeWithHours } from 'src/utils/dateUtils';
 @Injectable()
 export class AppointmentService {
   constructor(private readonly prisma: PrismaService) {}
-
-  async createMany(appointmentListDto: AppointmentDto[]): Promise<void> {
-    const createManyPromises = appointmentListDto.map(async (appointment) => {
-      await this.prisma.appointment.create({
-        data: {
-          startDate: appointment.startDate,
-          endDate: appointment.endDate,
-          email: appointment.email,
-        },
-      });
-    });
-    await Promise.all(createManyPromises);
-  }
 
   async getAllSchedules(date: string): Promise<ScheduleDto[]> {
     const appointmentsList = await this.prisma.appointment.findMany();
