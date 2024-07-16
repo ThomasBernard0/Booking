@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Schedule } from "../../types/schedule";
-import { usePrice } from "../../queries";
+import { createPayment, usePrice } from "../../queries";
 import Currency from "../Currency/Currency";
 import {
   Button,
@@ -135,6 +135,7 @@ export default function recapModale({
           variant="contained"
           disabled={isEmail(email) || price == 0}
           onClick={() => {
+            createPayment(price, email, scheduleSelected);
             setOpenRecapModale(false);
           }}
         >

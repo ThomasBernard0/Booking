@@ -40,15 +40,15 @@ export function usePrice(openRecapModale: boolean, numberOfSchedules: number) {
 }
 
 export async function createPayment(
-  email: string,
   price: number,
+  email: string,
   scheduleSelected: { [key: string]: Schedule }
 ) {
   const appointment = Object.values(scheduleSelected).map((schedule) => {
-    schedule.startDate, schedule.endDate;
+    return { startDate: schedule.startDate, endDate: schedule.endDate };
   });
   const data = { price, email, appointment };
-  const response = await fetch(`http://localhost:3000/payments/create`, {
+  const response = await fetch(`http://localhost:3000/payments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
