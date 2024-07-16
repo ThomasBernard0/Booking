@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Schedule } from "../../types/schedule";
 import { usePrice } from "../../queries";
+import Currency from "../Currency/Currency";
 import {
   Button,
   Dialog,
@@ -10,7 +11,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { FormattedNumber } from "react-intl";
 import {
   formatDateToDDMMYYYY,
   formatDDMMYYYYToDate,
@@ -110,11 +110,7 @@ export default function recapModale({
             </ul>
           </div>
         ))}
-        {isLoading ? (
-          "loading"
-        ) : (
-          <FormattedNumber value={price} style="currency" currency="EUR" />
-        )}
+        {isLoading ? "loading" : <Currency price={price} />}
       </DialogContent>
       <DialogActions>
         <Button

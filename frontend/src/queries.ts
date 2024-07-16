@@ -33,8 +33,7 @@ export function usePrice(openRecapModale: boolean, numberOfSchedules: number) {
       `http://localhost:3000/payments/price/${numberOfSchedules}`
     );
     const data = await response.json();
-    const price = data / 100;
-    setPrice(price);
+    setPrice(data);
     setIsLoading(false);
   }
   return { price, isLoading };
