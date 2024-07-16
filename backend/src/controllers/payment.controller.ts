@@ -1,6 +1,5 @@
 import { Controller, Post, Body, Get, Query, Param } from '@nestjs/common';
 import { PaymentService } from 'src/services/payment.service';
-import { ScheduleDto } from 'src/dto/schedule.dto';
 import { PaymentDto } from 'src/dto/payment.dto';
 
 @Controller('payments')

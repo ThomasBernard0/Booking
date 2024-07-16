@@ -12,7 +12,7 @@ export function useSchedules(dateSelected: Date | null) {
     setIsLoading(true);
     const date = formatDateToDDMMYYYY(dateSelected);
     const response = await fetch(
-      `http://localhost:3000/appointment/schedules-list?date=${date}`
+      `http://localhost:3000/appointments/schedules?date=${date}`
     );
     const data = await response.json();
     setSchedulesList(data);
