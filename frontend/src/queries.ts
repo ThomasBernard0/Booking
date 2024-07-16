@@ -38,3 +38,25 @@ export function usePrice(openRecapModale: boolean, numberOfSchedules: number) {
   }
   return { price, isLoading };
 }
+
+export async function createPayment(
+  email: string,
+  price: number,
+  scheduleSelected: { [key: string]: Schedule }
+) {
+  const appointment = Object.values(scheduleSelected).map((schedule) => {
+    schedule.startDate, schedule.endDate;
+  });
+  const data = { price, email, appointment };
+  const response = await fetch(`http://localhost:3000/payments/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+}
