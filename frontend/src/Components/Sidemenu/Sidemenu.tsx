@@ -56,6 +56,7 @@ export default function Sidemenu({
                       ? "contained"
                       : "outlined"
                   }
+                  disabled={schedule.booked}
                 >
                   {getHours(schedule.startDate) +
                     " - " +
