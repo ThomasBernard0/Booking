@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  TextField,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import {
@@ -30,6 +31,10 @@ type recapScheduleMap = {
   [key: string]: Schedule[];
 };
 
+const isEmail = (email: string) => {
+  return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
 export default function recapModale({
   openRecapModale,
   setOpenRecapModale,
@@ -42,6 +47,8 @@ export default function recapModale({
   const [recapScheduleMap, setRecapScheduleMap] = useState<recapScheduleMap>(
     {}
   );
+  const [email, setEmail] = useState<string>("");
+
   useEffect(() => {
     const newMap: recapScheduleMap = {};
     const schedulesList = Object.values(scheduleSelected);
@@ -67,9 +74,11 @@ export default function recapModale({
     }
     setRecapScheduleMap(sortedMap);
   }, [openRecapModale]);
+
   const handleClose = () => {
     setOpenRecapModale(false);
   };
+
   return (
     <Dialog
       onClose={handleClose}
@@ -111,14 +120,25 @@ export default function recapModale({
           </div>
         ))}
         {isLoading ? "loading" : <Currency price={price} />}
+        <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={isEmail(email)}
+          required
+        />
       </DialogContent>
       <DialogActions>
         <Button
+          variant="contained"
+          disabled={isEmail(email) || price == 0}
           onClick={() => {
             setOpenRecapModale(false);
           }}
         >
-          Close
+          Payer
         </Button>
       </DialogActions>
     </Dialog>
