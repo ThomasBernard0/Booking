@@ -19,14 +19,14 @@ type Props = {
       [key: string]: Schedule;
     }>
   >;
-  setOpenRecapModale: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Sidemenu({
   dateSelected,
   scheduleSelected,
   setScheduleSelected,
-  setOpenRecapModale,
+  setOpenRecapModal,
 }: Props) {
   const { schedulesList, isLoading } = useSchedules(dateSelected);
   const addingSchedule = (schedule: Schedule) => {
@@ -73,7 +73,7 @@ export default function Sidemenu({
           className="payer-button"
           variant="contained"
           disabled={Object.keys(scheduleSelected).length == 0}
-          onClick={() => setOpenRecapModale(true)}
+          onClick={() => setOpenRecapModal(true)}
         >
           Payer
         </Button>

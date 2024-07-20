@@ -21,12 +21,12 @@ export function useSchedules(dateSelected: Date | null) {
   return { schedulesList, isLoading };
 }
 
-export function usePrice(openRecapModale: boolean, numberOfSchedules: number) {
+export function usePrice(openRecapModal: boolean, numberOfSchedules: number) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [price, setPrice] = useState<number>(0);
   useEffect(() => {
     getPrice();
-  }, [openRecapModale]);
+  }, [openRecapModal]);
   async function getPrice() {
     setIsLoading(true);
     const response = await fetch(

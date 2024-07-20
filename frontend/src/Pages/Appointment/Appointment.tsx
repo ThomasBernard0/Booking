@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import Calendar from "../../Components/Calendar/Calendar";
-import Sidemenu from "../../Components/Sidemenu/Sidemenu";
+import Calendar from "../../components/Calendar/Calendar";
+import Sidemenu from "../../components/Sidemenu/Sidemenu";
 import "./Appointment.css";
 import { Schedule } from "../../types/schedule";
-import RecapModal from "../../Components/RecapModale/RecapModal";
-import SuccessModal from "../../Components/SuccessModal/SuccessModal";
-import ErrorModal from "../../Components/ErrorModal/ErrorModal";
+import RecapModal from "../../components/RecapModal/RecapModal";
+import SuccessModal from "../../components/SuccessModal/SuccessModal";
+import ErrorModal from "../../components/ErrorModal/ErrorModal";
 
 export default function Appointment() {
   const [scheduleSelected, setScheduleSelected] = useState<{
     [key: string]: Schedule;
   }>({});
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
-  const [openRecapModale, setOpenRecapModale] = useState<boolean>(false);
+  const [openRecapModal, setOpenRecapModal] = useState<boolean>(false);
   const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
   const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
   return (
@@ -23,12 +23,12 @@ export default function Appointment() {
           dateSelected={dateSelected}
           scheduleSelected={scheduleSelected}
           setScheduleSelected={setScheduleSelected}
-          setOpenRecapModale={setOpenRecapModale}
+          setOpenRecapModal={setOpenRecapModal}
         />
       )}
-      <RecapModale
-        openRecapModale={openRecapModale}
-        setOpenRecapModale={setOpenRecapModale}
+      <RecapModal
+        openRecapModal={openRecapModal}
+        setOpenRecapModal={setOpenRecapModal}
         scheduleSelected={scheduleSelected}
       />
       <SuccessModal
