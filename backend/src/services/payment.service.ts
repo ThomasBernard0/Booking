@@ -6,15 +6,9 @@ import { PaymentDto } from 'src/dto/payment.dto';
 export class PaymentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async handlePayment(
-    paymentDto: PaymentDto,
-  ): Promise<{ success: boolean; message: string }> {
+  async handlePayment(paymentDto: PaymentDto): Promise<void> {
     try {
       await this.create(paymentDto);
-      return {
-        success: true,
-        message: 'La payement a été validé',
-      };
     } catch {
       throw new HttpException(
         'Erreur lors du payement',
