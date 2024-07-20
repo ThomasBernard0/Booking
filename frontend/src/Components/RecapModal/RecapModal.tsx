@@ -92,7 +92,7 @@ export default function RecapModal({
   const handlePayment = async () => {
     setOpenRecapModal(false);
     try {
-      createPayment(price, email, scheduleSelected);
+      await createPayment(price, email, scheduleSelected);
       setScheduleSelected({});
       setOpenSuccessModal(true);
     } catch {

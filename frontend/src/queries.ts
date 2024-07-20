@@ -47,11 +47,14 @@ export async function createPayment(
   const appointment = Object.values(scheduleSelected).map((schedule) => {
     return { startDate: schedule.startDate, endDate: schedule.endDate };
   });
-  await fetch(`http://localhost:3000/payments`, {
+  const response = await fetch(`http://localhost:3000/payments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ price, email, appointment }),
   });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 }
