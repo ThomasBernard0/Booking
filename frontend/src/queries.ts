@@ -27,7 +27,9 @@ export function usePrice(openRecapModal: boolean, numberOfSchedules: number) {
   useEffect(() => {
     getPrice();
   }, [openRecapModal]);
+
   async function getPrice() {
+    if (!openRecapModal) return { price, isLoading };
     setIsLoading(true);
     const response = await fetch(
       `http://localhost:3000/payments/price/${numberOfSchedules}`
