@@ -25,6 +25,13 @@ type Props = {
   scheduleSelected: {
     [key: string]: Schedule;
   };
+  setScheduleSelected: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: Schedule;
+    }>
+  >;
+  setOpenSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type recapScheduleMap = {
@@ -39,15 +46,18 @@ export default function RecapModal({
   openRecapModal,
   setOpenRecapModal,
   scheduleSelected,
+  setScheduleSelected,
+  setOpenSuccessModal,
+  setOpenErrorModal,
 }: Props) {
   const { price, isLoading } = usePrice(
     openRecapModal,
     Object.keys(scheduleSelected).length
   );
+  const [email, setEmail] = useState<string>("");
   const [recapScheduleMap, setRecapScheduleMap] = useState<recapScheduleMap>(
     {}
   );
-  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const newMap: recapScheduleMap = {};
@@ -77,6 +87,17 @@ export default function RecapModal({
 
   const handleClose = () => {
     setOpenRecapModal(false);
+  };
+
+  const handlePayment = async () => {
+    setOpenRecapModal(false);
+    try {
+      createPayment(price, email, scheduleSelected);
+      setScheduleSelected({});
+      setOpenSuccessModal(true);
+    } catch {
+      setOpenErrorModal(true);
+    }
   };
 
   return (
@@ -134,10 +155,7 @@ export default function RecapModal({
         <Button
           variant="contained"
           disabled={isEmail(email) || price == 0}
-          onClick={() => {
-            createPayment(price, email, scheduleSelected);
-            setOpenRecapModal(false);
-          }}
+          onClick={handlePayment}
         >
           Payer
         </Button>

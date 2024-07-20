@@ -30,6 +30,9 @@ export default function Appointment() {
         openRecapModal={openRecapModal}
         setOpenRecapModal={setOpenRecapModal}
         scheduleSelected={scheduleSelected}
+        setScheduleSelected={setScheduleSelected}
+        setOpenSuccessModal={setOpenSuccessModal}
+        setOpenErrorModal={setOpenErrorModal}
       />
       <SuccessModal
         openSuccessModal={openSuccessModal}
