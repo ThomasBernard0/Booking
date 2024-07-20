@@ -3,7 +3,7 @@ import Calendar from "../../Components/Calendar/Calendar";
 import Sidemenu from "../../Components/Sidemenu/Sidemenu";
 import "./Appointment.css";
 import { Schedule } from "../../types/schedule";
-import RecapModale from "../../Components/recapModale/recapModale";
+import RecapModal from "../../Components/RecapModale/RecapModal";
 import SuccessModal from "../../Components/SuccessModal/SuccessModal";
 import ErrorModal from "../../Components/ErrorModal/ErrorModal";
 

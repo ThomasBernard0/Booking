@@ -20,8 +20,8 @@ import {
 } from "../../utils/dateUtils";
 
 type Props = {
-  openRecapModale: boolean;
-  setOpenRecapModale: React.Dispatch<React.SetStateAction<boolean>>;
+  openRecapModal: boolean;
+  setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
   scheduleSelected: {
     [key: string]: Schedule;
   };
@@ -35,13 +35,13 @@ const isEmail = (email: string) => {
   return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-export default function recapModale({
-  openRecapModale,
-  setOpenRecapModale,
+export default function RecapModal({
+  openRecapModal,
+  setOpenRecapModal,
   scheduleSelected,
 }: Props) {
   const { price, isLoading } = usePrice(
-    openRecapModale,
+    openRecapModal,
     Object.keys(scheduleSelected).length
   );
   const [recapScheduleMap, setRecapScheduleMap] = useState<recapScheduleMap>(
@@ -73,17 +73,17 @@ export default function recapModale({
       sortedMap[key] = sortedSchedule;
     }
     setRecapScheduleMap(sortedMap);
-  }, [openRecapModale]);
+  }, [openRecapModal]);
 
   const handleClose = () => {
-    setOpenRecapModale(false);
+    setOpenRecapModal(false);
   };
 
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
-      open={openRecapModale}
+      open={openRecapModal}
       PaperProps={{
         sx: {
           width: "50%",
@@ -136,7 +136,7 @@ export default function recapModale({
           disabled={isEmail(email) || price == 0}
           onClick={() => {
             createPayment(price, email, scheduleSelected);
-            setOpenRecapModale(false);
+            setOpenRecapModal(false);
           }}
         >
           Payer
