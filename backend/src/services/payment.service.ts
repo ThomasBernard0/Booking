@@ -24,19 +24,17 @@ export class PaymentService {
   }
 
   async create(paymentDto: PaymentDto): Promise<void> {
-    this.prisma.$transaction(async (prisma) => {
-      await prisma.payment.create({
-        data: {
-          price: paymentDto.price,
-          email: paymentDto.email,
-          appointment: {
-            create: paymentDto.appointment.map((a) => ({
-              startDate: a.startDate,
-              endDate: a.endDate,
-            })),
-          },
+    await this.prisma.payment.create({
+      data: {
+        price: paymentDto.price,
+        email: paymentDto.email,
+        appointment: {
+          create: paymentDto.appointment.map((a) => ({
+            startDate: a.startDate,
+            endDate: a.endDate,
+          })),
         },
-      });
+      },
     });
   }
 
