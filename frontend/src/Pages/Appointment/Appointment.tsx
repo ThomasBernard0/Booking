@@ -33,6 +33,8 @@ export default function Appointment() {
         setScheduleSelected={setScheduleSelected}
         setOpenSuccessModal={setOpenSuccessModal}
         setOpenErrorModal={setOpenErrorModal}
+        dateSelected={dateSelected}
+        setDateSelected={setDateSelected}
       />
       <SuccessModal
         openSuccessModal={openSuccessModal}

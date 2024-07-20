@@ -32,6 +32,8 @@ type Props = {
   >;
   setOpenSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
+  dateSelected: Date | null;
+  setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
 };
 
 type recapScheduleMap = {
@@ -49,6 +51,8 @@ export default function RecapModal({
   setScheduleSelected,
   setOpenSuccessModal,
   setOpenErrorModal,
+  dateSelected,
+  setDateSelected,
 }: Props) {
   const { price, isLoading } = usePrice(
     openRecapModal,
@@ -93,8 +97,11 @@ export default function RecapModal({
     setOpenRecapModal(false);
     try {
       await createPayment(price, email, scheduleSelected);
-      setScheduleSelected({});
       setOpenSuccessModal(true);
+      setScheduleSelected({});
+      if (dateSelected) {
+        setDateSelected(new Date(dateSelected));
+      }
     } catch {
       setOpenErrorModal(true);
     }
