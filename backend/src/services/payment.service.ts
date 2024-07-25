@@ -1,4 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PaymentDto } from 'src/dto/payment.dto';
 
@@ -8,28 +12,42 @@ export class PaymentService {
 
   async handlePayment(paymentDto: PaymentDto): Promise<void> {
     try {
-      await this.create(paymentDto);
-    } catch {
-      throw new HttpException(
-        'Erreur lors du payement',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      await this.processPayment();
+      await this.createPayment(paymentDto);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
   }
 
-  async create(paymentDto: PaymentDto): Promise<void> {
-    await this.prisma.payment.create({
-      data: {
-        price: paymentDto.price,
-        email: paymentDto.email,
-        appointment: {
-          create: paymentDto.appointment.map((a) => ({
-            startDate: a.startDate,
-            endDate: a.endDate,
-          })),
+  async processPayment(): Promise<void> {
+    try {
+      if (Math.floor(Math.random() * 10) <= 1) {
+        throw new Error();
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Echec lors du payement');
+    }
+  }
+
+  async createPayment(paymentDto: PaymentDto): Promise<void> {
+    try {
+      await this.prisma.payment.create({
+        data: {
+          price: paymentDto.price,
+          email: paymentDto.email,
+          appointment: {
+            create: paymentDto.appointment.map((a) => ({
+              startDate: a.startDate,
+              endDate: a.endDate,
+            })),
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Echec lors de la création du payement',
+      );
+    }
   }
 
   async getPrice(numberOfSchedules: number): Promise<number> {
