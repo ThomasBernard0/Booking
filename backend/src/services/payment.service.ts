@@ -1,15 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EmailService } from './email.service';
 import { PaymentDto } from 'src/dto/payment.dto';
 
 @Injectable()
 export class PaymentService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly emailService: EmailService,
+  ) {}
 
   async handlePayment(paymentDto: PaymentDto): Promise<void> {
     try {
       await this.processPayment();
       await this.createPayment(paymentDto);
+      await this.emailService.sendConfirmationMail(paymentDto.email);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -21,7 +26,7 @@ export class PaymentService {
         throw new Error();
       }
     } catch (error) {
-      throw new InternalServerErrorException('Echec lors du payement');
+      throw new InternalServerErrorException('Echec lors de la transaction');
     }
   }
 
@@ -41,7 +46,7 @@ export class PaymentService {
       });
     } catch (error) {
       throw new InternalServerErrorException(
-        `Echec lors de l'envoi de l'email`,
+        `Echec lors de l'envoi l'écriture du paiement`,
       );
     }
   }
