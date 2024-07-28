@@ -17,15 +17,22 @@ export function formatDDMMYYYYToDate(dateString: string): Date {
   const formattedDate = new Date(`${year}-${month}-${day}`);
   return formattedDate;
 }
+
 export function formatDateToFrenchLocale(date: Date | null): string {
   if (date == null) return "";
+  let dateObj: Date;
+  if (typeof date === "string") {
+    dateObj = new Date(date);
+  } else {
+    dateObj = date;
+  }
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   };
-  const frenchDate = date.toLocaleDateString("fr-FR", options);
+  const frenchDate = dateObj.toLocaleDateString("fr-FR", options);
   return frenchDate.charAt(0).toUpperCase() + frenchDate.slice(1);
 }
 
