@@ -1,7 +1,7 @@
 import React from "react";
+import "./ErrorModal.css";
 import { Button, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import "./ErrorModal.css";
 
 type Props = {
   openErrorModal: boolean;
@@ -22,13 +22,13 @@ export default function ErrorModal({
   };
   return (
     <Modal open={openErrorModal} onClose={handleClose}>
-      <div className="modal">
-        <CloseIcon className="icon" />
-        <div className="modal-title">Erreur !</div>
+      <div className="error-modal">
+        <CloseIcon className="error-modal-icon" />
+        <div className="error-modal-title">Erreur !</div>
         {errorType == "payment" ? (
           <div>Il y a eu une erreur lors du paiement</div>
         ) : (
-          <div className="modal-content">
+          <div className="error-modal-content">
             <div>Il y a eu une erreur lors de l'envoi du mail</div>
             <div>Veuillez nous contacter à l'adresse suivante oui@non.com</div>
           </div>

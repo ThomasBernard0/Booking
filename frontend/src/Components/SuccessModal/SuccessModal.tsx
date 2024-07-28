@@ -1,6 +1,7 @@
 import React from "react";
-import { Dialog, DialogContent, IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import "./SuccessModal.css";
+import { Button, Modal } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 type Props = {
   openSuccessModal: boolean;
@@ -15,29 +16,19 @@ export default function SuccessModal({
     setOpenSuccessModal(false);
   };
   return (
-    <Dialog
-      onClose={handleClose}
-      open={openSuccessModal}
-      PaperProps={{
-        sx: {
-          width: "50%",
-          maxWidth: "none",
-        },
-      }}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <Close />
-      </IconButton>
-      <DialogContent dividers>SUCCESS</DialogContent>
-    </Dialog>
+    <Modal open={openSuccessModal} onClose={handleClose}>
+      <div className="success-modal">
+        <CheckIcon className="success-modal-icon" />
+        <div className="success-modal-title">Paiement réussi</div>
+        <div className="success-modal-content">
+          <div>Vous allez reçevoir par mail les codes.</div>
+          <div>Cette opération peut prendre quelques minutes.</div>
+          <div>Pensez à regarder vos spams.</div>
+        </div>
+        <Button variant="contained" color="success" onClick={handleClose}>
+          <span>Ok</span>
+        </Button>
+      </div>
+    </Modal>
   );
 }
