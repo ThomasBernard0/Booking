@@ -56,7 +56,9 @@ export class PaymentService {
   getCode(paymentDto: PaymentDto): { date: string; code: string }[] {
     const codes = paymentDto.appointment.map((appointmen) => {
       let date = formatDateToFrenchLocale(appointmen.startDate);
+      date += '  ';
       date += getHours(appointmen.startDate);
+      date += ' - ';
       date += getHours(appointmen.endDate);
       let code = 'ABCDEFGHIJKLMNOP' + ' ' + appointmen.startDate;
       return { date, code };

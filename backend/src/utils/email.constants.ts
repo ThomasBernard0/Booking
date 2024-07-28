@@ -18,39 +18,40 @@ export const EMAIL_TEMPLATES = {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Vos Codes pour le Digicode</title>
           <style>
-            body {
+             body {
               font-family: Arial, sans-serif;
               color: #333;
               line-height: 1.6;
               margin: 20px;
+              padding: 0;
+              background-color: #f4f4f4;
             }
             .container {
               max-width: 600px;
               margin: 0 auto;
               padding: 20px;
-              border: 1px solid #ddd;
+              background: #fff;
               border-radius: 5px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
             .code-item {
-              margin-bottom: 10px;
+              padding: 10px 0;
+              border-bottom: 1px solid #ddd;
             }
             .date {
               font-weight: bold;
-              color: #007bff;
+              color: #333;
+              display: inline-block;
+              width: 150px;
             }
             .code {
               display: inline-block;
-              padding: 5px;
-              font-size: 16px;
-              font-weight: bold;
-              color: #fff;
-              background-color: #007bff;
-              border-radius: 3px;
+              color: #333;
             }
             .footer {
               margin-top: 20px;
               font-size: 0.9em;
-            }
+              color: #555;
           </style>
         </head>
         <body>
@@ -61,7 +62,8 @@ export const EMAIL_TEMPLATES = {
       codes.forEach(({ date, code }) => {
         htmlContent += `
             <div class="code-item">
-              <span class="date">${date}</span> : <span class="code">${code}</span>
+              <span class="date">${date}  : </span>
+              <span class="code">${code}</span>
             </div>
         `;
       });
