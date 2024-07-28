@@ -100,17 +100,22 @@ export default function RecapModal({
     try {
       await createPayment(price, email, scheduleSelected);
       setOpenSuccessModal(true);
-      setScheduleSelected({});
-      if (dateSelected) {
-        setDateSelected(new Date(dateSelected));
-      }
+      resetScheduleSelected();
     } catch (error: any) {
       if (error.message.includes("transaction")) {
         setErrorType("payment");
       } else {
         setErrorType("email");
+        resetScheduleSelected();
       }
       setOpenErrorModal(true);
+    }
+  };
+
+  const resetScheduleSelected = () => {
+    setScheduleSelected({});
+    if (dateSelected) {
+      setDateSelected(new Date(dateSelected));
     }
   };
 
