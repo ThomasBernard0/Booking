@@ -39,19 +39,20 @@ export const EMAIL_TEMPLATES = {
               border-bottom: 1px solid #ddd;
             }
             .date {
-              font-weight: bold;
-              color: #333;
               display: inline-block;
-              width: 150px;
+              color: #333;
+              width: 350px;
             }
             .code {
               display: inline-block;
               color: #333;
+              font-weight: bold;
             }
             .footer {
               margin-top: 20px;
               font-size: 0.9em;
               color: #555;
+            }
           </style>
         </head>
         <body>
