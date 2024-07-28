@@ -14,7 +14,7 @@
 }
 
 .icon {
-    font-size: 8rem;
+    font-size: 8rem !important;
     color: #c62828;
     border: solid 4px #c62828;
     border-radius: 50%;
