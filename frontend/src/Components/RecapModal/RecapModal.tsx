@@ -105,7 +105,7 @@ export default function RecapModal({
         setDateSelected(new Date(dateSelected));
       }
     } catch (error: any) {
-      if (error.message.includes("payment")) {
+      if (error.message.includes("payement")) {
         setErrorType("payment");
       } else {
         setErrorType("email");
