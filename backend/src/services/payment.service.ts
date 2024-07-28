@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PaymentDto } from 'src/dto/payment.dto';
 
@@ -21,7 +17,7 @@ export class PaymentService {
 
   async processPayment(): Promise<void> {
     try {
-      if (Math.floor(Math.random() * 10) <= 1) {
+      if (Math.floor(Math.random() * 10) > -1) {
         throw new Error();
       }
     } catch (error) {
@@ -45,7 +41,7 @@ export class PaymentService {
       });
     } catch (error) {
       throw new InternalServerErrorException(
-        'Echec lors de la création du payement',
+        `Echec lors de l'envoi de l'email`,
       );
     }
   }

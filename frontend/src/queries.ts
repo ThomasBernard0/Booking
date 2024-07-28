@@ -57,6 +57,7 @@ export async function createPayment(
     body: JSON.stringify({ price, email, appointment }),
   });
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorMessage = await response.text();
+    throw new Error(errorMessage);
   }
 }

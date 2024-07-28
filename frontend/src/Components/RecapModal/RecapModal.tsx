@@ -34,6 +34,7 @@ type Props = {
   setOpenErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
   dateSelected: Date | null;
   setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
+  setErrorType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type recapScheduleMap = {
@@ -53,6 +54,7 @@ export default function RecapModal({
   setOpenErrorModal,
   dateSelected,
   setDateSelected,
+  setErrorType,
 }: Props) {
   const { price, isLoading } = usePrice(
     openRecapModal,
@@ -102,7 +104,12 @@ export default function RecapModal({
       if (dateSelected) {
         setDateSelected(new Date(dateSelected));
       }
-    } catch {
+    } catch (error: any) {
+      if (error.message.includes("payment")) {
+        setErrorType("payment");
+      } else {
+        setErrorType("email");
+      }
       setOpenErrorModal(true);
     }
   };

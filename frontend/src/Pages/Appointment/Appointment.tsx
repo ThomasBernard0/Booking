@@ -15,6 +15,7 @@ export default function Appointment() {
   const [openRecapModal, setOpenRecapModal] = useState<boolean>(false);
   const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
   const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
+  const [errorType, setErrorType] = useState<string>("");
   return (
     <div className="appointment-wrapper">
       <Calendar setDateSelected={setDateSelected} />
@@ -35,6 +36,7 @@ export default function Appointment() {
         setOpenErrorModal={setOpenErrorModal}
         dateSelected={dateSelected}
         setDateSelected={setDateSelected}
+        setErrorType={setErrorType}
       />
       <SuccessModal
         openSuccessModal={openSuccessModal}
@@ -43,6 +45,8 @@ export default function Appointment() {
       <ErrorModal
         openErrorModal={openErrorModal}
         setOpenErrorModal={setOpenErrorModal}
+        errorType={errorType}
+        setErrorType={setErrorType}
       />
     </div>
   );

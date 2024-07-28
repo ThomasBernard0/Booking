@@ -1,43 +1,42 @@
 import React from "react";
-import { Dialog, DialogContent, IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Button, Modal } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import "./ErrorModal.css";
 
 type Props = {
   openErrorModal: boolean;
   setOpenErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
+  errorType: string;
+  setErrorType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function ErrorModal({
   openErrorModal,
   setOpenErrorModal,
+  errorType,
+  setErrorType,
 }: Props) {
   const handleClose = () => {
     setOpenErrorModal(false);
+    setErrorType("");
   };
   return (
-    <Dialog
-      onClose={handleClose}
-      open={openErrorModal}
-      PaperProps={{
-        sx: {
-          width: "50%",
-          maxWidth: "none",
-        },
-      }}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <Close />
-      </IconButton>
-      <DialogContent dividers>ERROR</DialogContent>
-    </Dialog>
+    <Modal open={openErrorModal} onClose={handleClose}>
+      <div className="modal">
+        <CloseIcon className="icon" />
+        <div className="title">Erreur !</div>
+        {errorType == "payment" ? (
+          <div>Il y a eu une erreur lors du paiement</div>
+        ) : (
+          <div>
+            <div>Il y a eu une erreur lors de l'envoi du mail</div>
+            <div>Veuillez nous contacter à l'adresse suivante oui@non.com</div>
+          </div>
+        )}
+        <Button variant="contained" color="error" onClick={handleClose}>
+          <span>Ok</span>
+        </Button>
+      </div>
+    </Modal>
   );
 }
