@@ -24,7 +24,7 @@ export default function ErrorModal({
     <Modal open={openErrorModal} onClose={handleClose}>
       <div className="modal">
         <CloseIcon className="icon" />
-        <div className="title">Erreur !</div>
+        <div className="modal-title">Erreur !</div>
         {errorType == "payment" ? (
           <div>Il y a eu une erreur lors du paiement</div>
         ) : (
