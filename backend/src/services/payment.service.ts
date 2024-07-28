@@ -54,13 +54,17 @@ export class PaymentService {
   }
 
   getCodes(paymentDto: PaymentDto): { date: string; code: string }[] {
-    const codes = paymentDto.appointment.map((appointmen) => {
-      let date = formatDateToFrenchLocale(appointmen.startDate);
+    const sortedAppointments = paymentDto.appointment.sort(
+      (a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+    );
+    const codes = sortedAppointments.map((appointment) => {
+      let date = formatDateToFrenchLocale(appointment.startDate);
       date += '  ';
-      date += getHours(appointmen.startDate);
+      date += getHours(appointment.startDate);
       date += ' - ';
-      date += getHours(appointmen.endDate);
-      let code = this.createCode(appointmen.startDate);
+      date += getHours(appointment.endDate);
+      let code = this.createCode(appointment.startDate);
       return { date, code };
     });
     return codes;
