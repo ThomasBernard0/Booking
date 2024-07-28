@@ -28,7 +28,7 @@ export default function ErrorModal({
         {errorType == "payment" ? (
           <div>Il y a eu une erreur lors du paiement</div>
         ) : (
-          <div>
+          <div className="modal-content">
             <div>Il y a eu une erreur lors de l'envoi du mail</div>
             <div>Veuillez nous contacter à l'adresse suivante oui@non.com</div>
           </div>
