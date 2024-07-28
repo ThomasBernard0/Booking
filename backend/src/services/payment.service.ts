@@ -15,7 +15,7 @@ export class PaymentService {
     try {
       await this.processPayment();
       await this.createPayment(paymentDto);
-      const codes = this.getCode(paymentDto);
+      const codes = this.getCodes(paymentDto);
       await this.emailService.sendConfirmationMail(codes, paymentDto.email);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
@@ -53,17 +53,31 @@ export class PaymentService {
     }
   }
 
-  getCode(paymentDto: PaymentDto): { date: string; code: string }[] {
+  getCodes(paymentDto: PaymentDto): { date: string; code: string }[] {
     const codes = paymentDto.appointment.map((appointmen) => {
       let date = formatDateToFrenchLocale(appointmen.startDate);
       date += '  ';
       date += getHours(appointmen.startDate);
       date += ' - ';
       date += getHours(appointmen.endDate);
-      let code = 'ABCDEFGHIJKLMNOP' + ' ' + appointmen.startDate;
+      let code = this.createCode(appointmen.startDate);
       return { date, code };
     });
     return codes;
+  }
+
+  createCode(date: Date): string {
+    const combinedString = process.env.CODE_HASH + new Date(date).toISOString();
+    let hash = 0;
+    for (let i = 0; i < combinedString.length; i++) {
+      const char = combinedString.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
+    }
+    hash = Math.abs(hash);
+    let fourDigitCode = (hash % 10000).toString();
+    fourDigitCode = fourDigitCode.padStart(4, '0');
+    return fourDigitCode;
   }
 
   async getPrice(numberOfSchedules: number): Promise<number> {
