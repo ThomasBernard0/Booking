@@ -17,7 +17,7 @@ export class PaymentService {
 
   async processPayment(): Promise<void> {
     try {
-      if (Math.floor(Math.random() * 10) > -1) {
+      if (Math.floor(Math.random() * 10) <= 1) {
         throw new Error();
       }
     } catch (error) {
