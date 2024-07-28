@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailService } from './email.service';
 import { PaymentDto } from 'src/dto/payment.dto';
+import { formatDateToFrenchLocale, getHours } from 'src/utils/dateUtils';
 
 @Injectable()
 export class PaymentService {
@@ -14,7 +15,8 @@ export class PaymentService {
     try {
       await this.processPayment();
       await this.createPayment(paymentDto);
-      await this.emailService.sendConfirmationMail(paymentDto.email);
+      const codes = this.getCode(paymentDto);
+      await this.emailService.sendConfirmationMail(codes, paymentDto.email);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -49,6 +51,17 @@ export class PaymentService {
         `Echec lors de l'envoi l'écriture du paiement`,
       );
     }
+  }
+
+  getCode(paymentDto: PaymentDto): { date: string; code: string }[] {
+    const codes = paymentDto.appointment.map((appointmen) => {
+      let date = formatDateToFrenchLocale(appointmen.startDate);
+      date += getHours(appointmen.startDate);
+      date += getHours(appointmen.endDate);
+      let code = 'ABCDEFGHIJKLMNOP' + ' ' + appointmen.startDate;
+      return { date, code };
+    });
+    return codes;
   }
 
   async getPrice(numberOfSchedules: number): Promise<number> {

@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { EMAIL_TEMPLATES } from 'src/utils/email.constants';
 
 @Injectable()
 export class EmailService {
@@ -31,11 +32,14 @@ export class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
-  async sendConfirmationMail(to: string): Promise<void> {
+  async sendConfirmationMail(
+    codes: { date: string; code: string }[],
+    to: string,
+  ): Promise<void> {
     try {
-      const subject = 'Hi';
-      const text = 'Hello';
-      const html = '';
+      const subject = EMAIL_TEMPLATES.DIGICODE_CODE.subject;
+      const text = EMAIL_TEMPLATES.DIGICODE_CODE.text(codes);
+      const html = EMAIL_TEMPLATES.DIGICODE_CODE.html(codes);
       await this.sendMail(to, subject, text, html);
     } catch (error) {
       throw new InternalServerErrorException(
