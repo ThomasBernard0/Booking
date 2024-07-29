@@ -38,8 +38,8 @@ export class PaymentService {
         data: {
           price: paymentDto.price,
           email: paymentDto.email,
-          appointment: {
-            create: paymentDto.appointment.map((a) => ({
+          appointments: {
+            create: paymentDto.appointments.map((a) => ({
               startDate: a.startDate,
               endDate: a.endDate,
             })),
@@ -54,7 +54,7 @@ export class PaymentService {
   }
 
   getCodes(paymentDto: PaymentDto): { date: string; code: string }[] {
-    const sortedAppointments = paymentDto.appointment.sort(
+    const sortedAppointments = paymentDto.appointments.sort(
       (a, b) =>
         new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
     );

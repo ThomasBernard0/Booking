@@ -16,8 +16,8 @@ model Appointment {
 }
 
 model Payment {
-  id          Int           @id @default(autoincrement())
-  price       Int
-  email       String
-  appointment Appointment[]
+  id           Int           @id @default(autoincrement())
+  price        Int
+  email        String
+  appointments Appointment[]
 }

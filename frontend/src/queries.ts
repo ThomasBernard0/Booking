@@ -46,7 +46,7 @@ export async function createPayment(
   email: string,
   scheduleSelected: { [key: string]: Schedule }
 ) {
-  const appointment = Object.values(scheduleSelected).map((schedule) => {
+  const appointments = Object.values(scheduleSelected).map((schedule) => {
     return { startDate: schedule.startDate, endDate: schedule.endDate };
   });
   const response = await fetch(`http://localhost:3000/payments`, {
@@ -54,7 +54,7 @@ export async function createPayment(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ price, email, appointment }),
+    body: JSON.stringify({ price, email, appointments }),
   });
   if (!response.ok) {
     const errorMessage = await response.text();

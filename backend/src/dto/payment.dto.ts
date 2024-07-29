@@ -7,5 +7,5 @@ export class PaymentDto {
   @IsEmail()
   email: string;
 
-  appointment: Appointment[];
+  appointments: Appointment[];
 }
