@@ -63,7 +63,7 @@ export const EMAIL_TEMPLATES = {
       codes.forEach(({ date, code }) => {
         htmlContent += `
             <div class="code-item">
-              <span class="date">${date}  : </span>
+              <span class="date">${date}</span>
               <span class="code">${code}</span>
             </div>
         `;
