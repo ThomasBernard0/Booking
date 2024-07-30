@@ -1,6 +1,6 @@
 import React from "react";
 import "./Sidemenu.css";
-import { Button, Card } from "@mui/material";
+import { Button, Card, CircularProgress } from "@mui/material";
 import { useSchedules } from "../../queries";
 import {
   formatDateToDDMMYYYY,
@@ -43,27 +43,29 @@ export default function Sidemenu({
     <Card className="sidemenu-wrapper">
       <div className="title">{formatDateToFrenchLocale(dateSelected)}</div>
       <div className="button-container">
-        {isLoading
-          ? "loading"
-          : schedulesList.map((schedule, index) => {
-              return (
-                <Button
-                  key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
-                  className="schedule"
-                  onClick={() => addingSchedule(schedule)}
-                  variant={
-                    schedule.startDate.toString() in scheduleSelected
-                      ? "contained"
-                      : "outlined"
-                  }
-                  disabled={schedule.booked}
-                >
-                  {getHours(schedule.startDate) +
-                    " - " +
-                    getHours(schedule.endDate)}
-                </Button>
-              );
-            })}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          schedulesList.map((schedule, index) => {
+            return (
+              <Button
+                key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
+                className="schedule"
+                onClick={() => addingSchedule(schedule)}
+                variant={
+                  schedule.startDate.toString() in scheduleSelected
+                    ? "contained"
+                    : "outlined"
+                }
+                disabled={schedule.booked}
+              >
+                {getHours(schedule.startDate) +
+                  " - " +
+                  getHours(schedule.endDate)}
+              </Button>
+            );
+          })
+        )}
       </div>
       <div className="shopping-cart">
         <span>

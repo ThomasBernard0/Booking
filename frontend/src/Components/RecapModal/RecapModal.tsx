@@ -4,6 +4,7 @@ import { createPayment, usePrice } from "../../queries";
 import Currency from "../Currency/Currency";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -159,7 +160,7 @@ export default function RecapModal({
             </ul>
           </div>
         ))}
-        {isLoading ? "loading" : <Currency price={price} />}
+        {isLoading ? <CircularProgress /> : <Currency price={price} />}
         <TextField
           label="Email"
           type="email"
