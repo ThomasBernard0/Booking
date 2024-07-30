@@ -5,9 +5,10 @@ import { PaymentService } from './services/payment.service';
 import { AppointmentController } from './controllers/appointment.controller';
 import { AppointmentService } from './services/appointment.service';
 import { EmailService } from './services/email.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AuthModule],
   controllers: [PaymentsController, AppointmentController],
   providers: [PaymentService, AppointmentService, EmailService],
 })
