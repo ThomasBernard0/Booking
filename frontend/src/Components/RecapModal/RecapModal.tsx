@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./RecapModal.css";
 import { Schedule } from "../../types/schedule";
 import { createPayment, usePrice } from "../../queries";
 import Currency from "../Currency/Currency";
@@ -146,30 +147,44 @@ export default function RecapModal({
         <Close />
       </IconButton>
       <DialogContent dividers>
-        {Object.keys(recapScheduleMap).map((key) => (
-          <div key={key}>
-            <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
-            <ul>
-              {recapScheduleMap[key].map((schedule, index) => (
-                <li key={`${key}-${index}`}>
-                  {getHours(schedule.startDate) +
-                    " - " +
-                    getHours(schedule.endDate)}
-                </li>
-              ))}
-            </ul>
+        <div className="recap-modal-content">
+          {Object.keys(recapScheduleMap).map((key) => (
+            <div key={key}>
+              <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
+              <ul>
+                {recapScheduleMap[key].map((schedule, index) => (
+                  <li key={`${key}-${index}`}>
+                    {getHours(schedule.startDate) +
+                      " - " +
+                      getHours(schedule.endDate)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="price-container">
+            <div>
+              <span>Total : </span>
+              {isLoading ? <CircularProgress /> : <Currency price={price} />}
+            </div>
+            <div className="email-container">
+              <span>
+                Veuillez saisir l'adresse e-mail sur laquelle vous voulez
+                recevoir vos codes :
+              </span>
+              <TextField
+                label="Email"
+                type="email"
+                variant="outlined"
+                style={{ width: "600px" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={isEmail(email)}
+                required
+              />
+            </div>
           </div>
-        ))}
-        {isLoading ? <CircularProgress /> : <Currency price={price} />}
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={isEmail(email)}
-          required
-        />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
