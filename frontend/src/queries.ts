@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import { formatDateToDDMMYYYY } from "./utils/dateUtils";
 import { Schedule } from "./types/schedule";
 
+export function getToken() {
+  useEffect(() => {
+    fetchToken();
+  }, []);
+  async function fetchToken() {
+    try {
+      const response = await fetch("http://localhost:3000/auth/token");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
+    } catch (error) {
+      console.error("Failed to fetch token:", error);
+      throw error;
+    }
+  }
+}
+
 export function useSchedules(dateSelected: Date | null) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [schedulesList, setSchedulesList] = useState<Schedule[]>([]);
@@ -11,8 +30,16 @@ export function useSchedules(dateSelected: Date | null) {
   async function getSchedules() {
     setIsLoading(true);
     const date = formatDateToDDMMYYYY(dateSelected);
+    const token = localStorage.getItem("access_token");
     const response = await fetch(
-      `http://localhost:3000/appointments/schedules?date=${date}`
+      `http://localhost:3000/appointments/schedules?date=${date}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     const data = await response.json();
     setSchedulesList(data);
@@ -31,8 +58,16 @@ export function usePrice(openRecapModal: boolean, numberOfSchedules: number) {
   async function getPrice() {
     if (!openRecapModal) return { price, isLoading };
     setIsLoading(true);
+    const token = localStorage.getItem("access_token");
     const response = await fetch(
-      `http://localhost:3000/payments/price/${numberOfSchedules}`
+      `http://localhost:3000/payments/price/${numberOfSchedules}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     const data = await response.json();
     setPrice(data);
@@ -49,9 +84,11 @@ export async function createPayment(
   const appointments = Object.values(scheduleSelected).map((schedule) => {
     return { startDate: schedule.startDate, endDate: schedule.endDate };
   });
+  const token = localStorage.getItem("access_token");
   const response = await fetch(`http://localhost:3000/payments`, {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ price, email, appointments }),
