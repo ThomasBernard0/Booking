@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EmailService } from './email.service';
-import { PaymentDto } from 'src/dto/payment.dto';
+import { PaymentDto } from './payment.dto';
 import { formatDateToFrenchLocale, getHours } from 'src/utils/dateUtils';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class PaymentService {

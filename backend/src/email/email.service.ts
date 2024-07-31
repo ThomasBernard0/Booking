@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { EMAIL_TEMPLATES } from 'src/utils/email.constants';
+import { EMAIL_TEMPLATES } from 'src/utils/constants/email.constants';
 
 @Injectable()
 export class EmailService {

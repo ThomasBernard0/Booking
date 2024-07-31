@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ScheduleDto } from 'src/dto/schedule.dto';
-import getDefaultAvailabilityByDay from 'src/utils/availability';
+import { ScheduleDto } from './schedule.dto';
 import { createDateTime, createDateTimeWithHours } from 'src/utils/dateUtils';
+import getDefaultAvailabilityByDay from 'src/utils/constants/availability.constants';
 
 @Injectable()
 export class AppointmentService {

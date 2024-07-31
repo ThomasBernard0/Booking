@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { AppointmentService } from 'src/services/appointment.service';
-import { ScheduleDto } from 'src/dto/schedule.dto';
+import { AppointmentService } from 'src/appointment/appointment.service';
+import { ScheduleDto } from './schedule.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('appointments')
