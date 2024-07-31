@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Calendar from "../../Componentsz/Calendar/Calendar";
-import Sidemenu from "../../Componentsz/Sidemenu/Sidemenu";
+import Calendar from "../../components/Calendar/Calendar";
+import Sidemenu from "../../components/Sidemenu/Sidemenu";
 import "./Appointment.css";
 import { Schedule } from "../../types/schedule";
-import RecapModal from "../../Componentsz/RecapModal/RecapModal";
-import SuccessModal from "../../Componentsz/SuccessModal/SuccessModal";
-import ErrorModal from "../../Componentsz/ErrorModal/ErrorModal";
+import RecapModal from "../../components/RecapModal/RecapModal";
+import SuccessModal from "../../components/SuccessModal/SuccessModal";
+import ErrorModal from "../../components/ErrorModal/ErrorModal";
 
 export default function Appointment() {
   const [scheduleSelected, setScheduleSelected] = useState<{
