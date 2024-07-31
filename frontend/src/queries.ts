@@ -2,25 +2,6 @@ import { useEffect, useState } from "react";
 import { formatDateToDDMMYYYY } from "./utils/dateUtils";
 import { Schedule } from "./types/schedule";
 
-export function getToken() {
-  useEffect(() => {
-    fetchToken();
-  }, []);
-  async function fetchToken() {
-    try {
-      const response = await fetch("http://localhost:3000/auth/token");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      localStorage.setItem("access_token", data.access_token);
-    } catch (error) {
-      console.error("Failed to fetch token:", error);
-      throw error;
-    }
-  }
-}
-
 export function useSchedules(dateSelected: Date | null) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [schedulesList, setSchedulesList] = useState<Schedule[]>([]);
