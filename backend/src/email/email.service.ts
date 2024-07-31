@@ -23,7 +23,7 @@ export class EmailService {
     html: string,
   ): Promise<void> {
     const mailOptions: nodemailer.SendMailOptions = {
-      from: `"Padel" <${process.env.GMAIL_USER}>`,
+      from: `"Booking" <${process.env.GMAIL_USER}>`,
       to,
       subject,
       text,
