@@ -5,7 +5,7 @@ export function createDateTimeWithHours(date: Date, timeStr: string): Date {
   return dateTime;
 }
 
-export function createDateUTC(date: Date): Date {
+function createDateUTC(date: Date): Date {
   const localDate = new Date(date);
   const utcDate = new Date(
     Date.UTC(

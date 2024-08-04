@@ -72,9 +72,9 @@ export class BookingService {
       throw new Error();
     }
 
-    const codes = this.getCodes(bookingRequest.bookings);
+    const datesCodesList = this.getCodes(bookingRequest.bookings);
     await this.emailService.sendBookingConfirmation(
-      codes,
+      datesCodesList,
       bookingRequest.email,
     );
   }
@@ -84,7 +84,7 @@ export class BookingService {
       (a, b) =>
         new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
     );
-    const codes = sortedBookings.map((booking) => {
+    const datesCodesList = sortedBookings.map((booking) => {
       let date = formatDateToFrenchLocale(booking.startDate);
       date += '  ';
       date += getHours(booking.startDate);
@@ -93,7 +93,7 @@ export class BookingService {
       let code = this.createCode(booking.startDate);
       return { date, code };
     });
-    return codes;
+    return datesCodesList;
   }
 
   createCode(date: Date): string {
