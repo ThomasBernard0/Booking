@@ -1,13 +1,24 @@
-export function createDateTimeWithHours(date: string, timeStr: string): Date {
-  const dateTime = createDateTime(date);
+export function createDateTimeWithHours(date: Date, timeStr: string): Date {
+  const dateTime = createDateUTC(date);
   const [hours, minutes] = timeStr.split(':').map(Number);
   dateTime.setUTCHours(hours, minutes);
   return dateTime;
 }
 
-export function createDateTime(date: string): Date {
-  const [day, month, year] = date.split('-').map(Number);
-  return new Date(Date.UTC(year, month - 1, day));
+export function createDateUTC(date: Date): Date {
+  const localDate = new Date(date);
+  const utcDate = new Date(
+    Date.UTC(
+      localDate.getUTCFullYear(),
+      localDate.getUTCMonth(),
+      localDate.getUTCDate(),
+      localDate.getUTCHours(),
+      localDate.getUTCMinutes(),
+      localDate.getUTCSeconds(),
+      localDate.getUTCMilliseconds(),
+    ),
+  );
+  return utcDate;
 }
 
 export function formatDateToFrenchLocale(date: Date | null): string {

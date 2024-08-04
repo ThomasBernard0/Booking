@@ -1,12 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import * as nodemailer from 'nodemailer';
 import { EMAIL_TEMPLATES } from 'src/utils/constants/email.constants';
 
 @Injectable()
 export class EmailService {
   private transporter: nodemailer.Transporter;
-
-  constructor() {
+  constructor(private readonly prisma: PrismaService) {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -32,7 +32,7 @@ export class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
-  async sendConfirmationMail(
+  public async sendBookingConfirmation(
     codes: { date: string; code: string }[],
     to: string,
   ): Promise<void> {

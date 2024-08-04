@@ -7,17 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Appointment {
-  id        Int      @id @default(autoincrement())
-  startDate DateTime
-  endDate   DateTime
-  paymentId Int
-  payment   Payment  @relation(fields: [paymentId], references: [id])
+enum BookingRequestStatus {
+  PENDING
+  DONE
+  CANCELED
 }
 
-model Payment {
-  id           Int           @id @default(autoincrement())
-  price        Int
-  email        String
-  appointments Appointment[]
+model BookingRequest {
+  id                  Int                  @id @default(autoincrement())
+  payment_id          String               @unique
+  priceInCent         Int
+  email               String
+  status              BookingRequestStatus
+  bookings            Booking[]
+  BookingRequestQueue BookingRequestQueue?
+}
+
+model BookingRequestQueue {
+  id               Int            @id @default(autoincrement())
+  date             DateTime
+  bookingRequestId Int            @unique
+  bookingRequest   BookingRequest @relation(fields: [bookingRequestId], references: [id])
+}
+
+model Booking {
+  id               Int            @id @default(autoincrement())
+  startDate        DateTime
+  endDate          DateTime
+  bookingRequestId Int
+  bookingRequest   BookingRequest @relation(fields: [bookingRequestId], references: [id])
 }

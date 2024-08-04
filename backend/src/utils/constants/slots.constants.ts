@@ -1,6 +1,4 @@
-export default function getDefaultAvailabilityByDay(
-  dayAsNumber: number,
-): string[][] {
+export default function getDefaultSlotsByDay(dayAsNumber: number): string[][] {
   let dayAsString;
   switch (dayAsNumber) {
     case 0:
@@ -27,14 +25,14 @@ export default function getDefaultAvailabilityByDay(
     default:
       return [];
   }
-  return availabilityConstant[dayAsString];
+  return slotsConstant[dayAsString];
 }
 
-interface availabilityConstant {
+interface slotsConstant {
   [key: string]: string[][];
 }
 
-const availabilityConstant: {
+const slotsConstant: {
   [key: string]: string[][];
   monday: string[][];
   tuesday: string[][];
