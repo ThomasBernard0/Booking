@@ -32,11 +32,8 @@ type Props = {
       [key: string]: Schedule;
     }>
   >;
-  setOpenSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
   dateSelected: Date | null;
   setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
-  setErrorType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type recapScheduleMap = {
@@ -52,11 +49,8 @@ export default function RecapModal({
   setOpenRecapModal,
   scheduleSelected,
   setScheduleSelected,
-  setOpenSuccessModal,
-  setOpenErrorModal,
   dateSelected,
   setDateSelected,
-  setErrorType,
 }: Props) {
   const { price, isLoading } = usePrice(
     openRecapModal,
@@ -97,30 +91,7 @@ export default function RecapModal({
     setOpenRecapModal(false);
   };
 
-  const handlePayment = async () => {
-    setOpenRecapModal(false);
-    try {
-      await createPayment(price, email, scheduleSelected);
-      setOpenSuccessModal(true);
-      resetScheduleSelected();
-    } catch (error: any) {
-      if (error.message.includes("transaction")) {
-        setErrorType("payment");
-      } else {
-        setErrorType("email");
-        resetScheduleSelected();
-      }
-      setOpenErrorModal(true);
-    }
-  };
-
-  const resetScheduleSelected = () => {
-    setScheduleSelected({});
-    if (dateSelected) {
-      setDateSelected(new Date(dateSelected));
-    }
-  };
-
+  const handlePayment = async () => {};
   return (
     <Dialog
       onClose={handleClose}
