@@ -60,6 +60,6 @@ export async function makeBookingRequest(
     const errorMessage = await response.text();
     throw new Error(errorMessage);
   }
-  const data = await response.json();
-  return data.payment_id;
+  const payment_id = await response.text();
+  return payment_id;
 }
