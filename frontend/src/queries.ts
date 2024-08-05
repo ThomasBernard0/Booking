@@ -1,81 +1,62 @@
 import { useEffect, useState } from "react";
 import { formatDateToDDMMYYYY } from "./utils/dateUtils";
-import { Schedule } from "./types/schedule";
+import { Slot } from "./types/slot";
 
-export function useSchedules(dateSelected: Date | null) {
+export function useSlots(dateSelected: Date | null) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [schedulesList, setSchedulesList] = useState<Schedule[]>([]);
+  const [slotsList, setSlotsList] = useState<Slot[]>([]);
   useEffect(() => {
-    getSchedules();
+    getSlots();
   }, [dateSelected]);
-  async function getSchedules() {
+  async function getSlots() {
     setIsLoading(true);
     const date = formatDateToDDMMYYYY(dateSelected);
-    const token = localStorage.getItem("access_token");
     const response = await fetch(
-      `http://localhost:3000/appointments/schedules?date=${date}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      `http://localhost:3000/bookings/availabilities?date=${date}`
     );
     const data = await response.json();
-    setSchedulesList(data);
+    setSlotsList(data);
     setIsLoading(false);
   }
-  return { schedulesList, isLoading };
+  return { slotsList, isLoading };
 }
 
 export function usePrice(openRecapModal: boolean, numberOfSchedules: number) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [price, setPrice] = useState<number>(0);
+  const [priceInCent, setPrice] = useState<number>(0);
   useEffect(() => {
     getPrice();
   }, [openRecapModal]);
 
   async function getPrice() {
-    if (!openRecapModal) return { price, isLoading };
+    if (!openRecapModal) return { priceInCent, isLoading };
     setIsLoading(true);
-    const token = localStorage.getItem("access_token");
     const response = await fetch(
-      `http://localhost:3000/payments/price/${numberOfSchedules}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      `http://localhost:3000/bookings/price/${numberOfSchedules}`
     );
     const data = await response.json();
     setPrice(data);
     setIsLoading(false);
   }
-  return { price, isLoading };
+  return { priceInCent, isLoading };
 }
 
-export async function createPayment(
-  price: number,
+export async function makeBookingRequest(
+  priceInCent: number,
   email: string,
-  scheduleSelected: { [key: string]: Schedule }
+  slotsSelected: { [key: string]: Slot }
 ) {
-  const appointments = Object.values(scheduleSelected).map((schedule) => {
-    return { startDate: schedule.startDate, endDate: schedule.endDate };
+  const bookings = Object.values(slotsSelected).map((slot) => {
+    return { startDate: slot.startDate, endDate: slot.endDate };
   });
-  const token = localStorage.getItem("access_token");
-  const response = await fetch(`http://localhost:3000/payments`, {
+  const response = await fetch(`http://localhost:3000/bookings/bookRequest`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ price, email, appointments }),
+    body: JSON.stringify({ priceInCent, email, bookings }),
   });
   if (!response.ok) {
     const errorMessage = await response.text();
     throw new Error(errorMessage);
   }
+  const data = await response.json();
+  return data.payment_id;
 }
