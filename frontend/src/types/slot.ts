@@ -1,4 +1,4 @@
-export interface Schedule {
+export interface Slot {
   startDate: Date;
   endDate: Date;
   booked: boolean;

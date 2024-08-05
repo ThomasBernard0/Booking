@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Calendar from "./../components/Calendar/Calendar";
 import Sidemenu from "./../components/Sidemenu/Sidemenu";
-import "./Appointment.css";
-import { Schedule } from "./../types/schedule";
 import RecapModal from "./../components/RecapModal/RecapModal";
+import { Slot } from "../types/slot";
 
 export default function Appointment() {
-  const [scheduleSelected, setScheduleSelected] = useState<{
-    [key: string]: Schedule;
+  const [slotsSelected, setSlotsSelected] = useState<{
+    [key: string]: Slot;
   }>({});
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
   const [openRecapModal, setOpenRecapModal] = useState<boolean>(false);
@@ -17,18 +16,15 @@ export default function Appointment() {
       {dateSelected && (
         <Sidemenu
           dateSelected={dateSelected}
-          scheduleSelected={scheduleSelected}
-          setScheduleSelected={setScheduleSelected}
+          slotsSelected={slotsSelected}
+          setSlotsSelected={setSlotsSelected}
           setOpenRecapModal={setOpenRecapModal}
         />
       )}
       <RecapModal
         openRecapModal={openRecapModal}
         setOpenRecapModal={setOpenRecapModal}
-        scheduleSelected={scheduleSelected}
-        setScheduleSelected={setScheduleSelected}
-        dateSelected={dateSelected}
-        setDateSelected={setDateSelected}
+        slotsSelected={slotsSelected}
       />
     </div>
   );

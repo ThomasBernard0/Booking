@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./RecapModal.css";
-import { Schedule } from "../../types/schedule";
-import { createPayment, usePrice } from "../../queries";
+import { Slot } from "../../types/slot";
+import { makeBookingRequest, usePrice } from "../../queries";
 import Currency from "../Currency/Currency";
 import {
   Button,
@@ -24,20 +25,13 @@ import {
 type Props = {
   openRecapModal: boolean;
   setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
-  scheduleSelected: {
-    [key: string]: Schedule;
+  slotsSelected: {
+    [key: string]: Slot;
   };
-  setScheduleSelected: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: Schedule;
-    }>
-  >;
-  dateSelected: Date | null;
-  setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
 };
 
-type recapScheduleMap = {
-  [key: string]: Schedule[];
+type recapSlotMap = {
+  [key: string]: Slot[];
 };
 
 const isEmail = (email: string) => {
@@ -47,32 +41,28 @@ const isEmail = (email: string) => {
 export default function RecapModal({
   openRecapModal,
   setOpenRecapModal,
-  scheduleSelected,
-  setScheduleSelected,
-  dateSelected,
-  setDateSelected,
+  slotsSelected,
 }: Props) {
-  const { price, isLoading } = usePrice(
+  const navigate = useNavigate();
+  const { priceInCent, isLoading } = usePrice(
     openRecapModal,
-    Object.keys(scheduleSelected).length
+    Object.keys(slotsSelected).length
   );
   const [email, setEmail] = useState<string>("");
-  const [recapScheduleMap, setRecapScheduleMap] = useState<recapScheduleMap>(
-    {}
-  );
+  const [recapSlotMap, setRecapSlotMap] = useState<recapSlotMap>({});
 
   useEffect(() => {
-    const newMap: recapScheduleMap = {};
-    const schedulesList = Object.values(scheduleSelected);
-    schedulesList.forEach((schedule) => {
-      const date = formatDateToDDMMYYYY(schedule.startDate);
+    const newMap: recapSlotMap = {};
+    const slotsList = Object.values(slotsSelected);
+    slotsList.forEach((slot) => {
+      const date = formatDateToDDMMYYYY(slot.startDate);
       if (date in newMap) {
-        newMap[date] = [...newMap[date], schedule];
+        newMap[date] = [...newMap[date], slot];
       } else {
-        newMap[date] = [schedule];
+        newMap[date] = [slot];
       }
     });
-    const sortedMap: recapScheduleMap = {};
+    const sortedMap: recapSlotMap = {};
     const sortedKeys = Object.keys(newMap).sort(
       (a, b) =>
         formatDDMMYYYYToDate(a).getTime() - formatDDMMYYYYToDate(b).getTime()
@@ -84,14 +74,25 @@ export default function RecapModal({
       );
       sortedMap[key] = sortedSchedule;
     }
-    setRecapScheduleMap(sortedMap);
+    setRecapSlotMap(sortedMap);
   }, [openRecapModal]);
 
   const handleClose = () => {
     setOpenRecapModal(false);
   };
 
-  const handlePayment = async () => {};
+  const handlePayment = async () => {
+    try {
+      const payment_id = await makeBookingRequest(
+        priceInCent,
+        email,
+        slotsSelected
+      );
+      navigate("/payment", { state: { payment_id: payment_id } });
+    } catch {
+      return;
+    }
+  };
   return (
     <Dialog
       onClose={handleClose}
@@ -119,15 +120,13 @@ export default function RecapModal({
       </IconButton>
       <DialogContent dividers>
         <div className="recap-modal-content">
-          {Object.keys(recapScheduleMap).map((key) => (
+          {Object.keys(recapSlotMap).map((key) => (
             <div key={key}>
               <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
               <ul>
-                {recapScheduleMap[key].map((schedule, index) => (
+                {recapSlotMap[key].map((slot, index) => (
                   <li key={`${key}-${index}`}>
-                    {getHours(schedule.startDate) +
-                      " - " +
-                      getHours(schedule.endDate)}
+                    {getHours(slot.startDate) + " - " + getHours(slot.endDate)}
                   </li>
                 ))}
               </ul>
@@ -136,7 +135,11 @@ export default function RecapModal({
           <div className="price-container">
             <div>
               <span>Total : </span>
-              {isLoading ? <CircularProgress /> : <Currency price={price} />}
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Currency price={priceInCent} />
+              )}
             </div>
             <div className="email-container">
               <span>
@@ -160,7 +163,7 @@ export default function RecapModal({
       <DialogActions>
         <Button
           variant="contained"
-          disabled={isEmail(email) || price == 0}
+          disabled={isEmail(email) || priceInCent == 0}
           onClick={handlePayment}
         >
           Payer

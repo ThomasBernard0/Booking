@@ -1,22 +1,22 @@
 import React from "react";
 import "./Sidemenu.css";
 import { Button, Card, CircularProgress } from "@mui/material";
-import { useSchedules } from "../../queries";
+import { useSlots } from "../../queries";
 import {
   formatDateToDDMMYYYY,
   formatDateToFrenchLocale,
   getHours,
 } from "../../utils/dateUtils";
-import { Schedule } from "../../types/schedule";
+import { Slot } from "../../types/slot";
 
 type Props = {
   dateSelected: Date | null;
-  scheduleSelected: {
-    [key: string]: Schedule;
+  slotsSelected: {
+    [key: string]: Slot;
   };
-  setScheduleSelected: React.Dispatch<
+  setSlotsSelected: React.Dispatch<
     React.SetStateAction<{
-      [key: string]: Schedule;
+      [key: string]: Slot;
     }>
   >;
   setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,19 +24,19 @@ type Props = {
 
 export default function Sidemenu({
   dateSelected,
-  scheduleSelected,
-  setScheduleSelected,
+  slotsSelected,
+  setSlotsSelected,
   setOpenRecapModal,
 }: Props) {
-  const { schedulesList, isLoading } = useSchedules(dateSelected);
-  const addingSchedule = (schedule: Schedule) => {
-    const key = schedule.startDate.toString();
-    if (key in scheduleSelected) {
-      const newSchedule = { ...scheduleSelected };
+  const { slotsList, isLoading } = useSlots(dateSelected);
+  const addingSlots = (slot: Slot) => {
+    const key = slot.startDate.toString();
+    if (key in slotsSelected) {
+      const newSchedule = { ...slotsSelected };
       delete newSchedule[key];
-      setScheduleSelected(newSchedule);
+      setSlotsSelected(newSchedule);
     } else {
-      setScheduleSelected({ ...scheduleSelected, [key]: schedule });
+      setSlotsSelected({ ...slotsSelected, [key]: slot });
     }
   };
   return (
@@ -46,22 +46,20 @@ export default function Sidemenu({
         {isLoading ? (
           <CircularProgress />
         ) : (
-          schedulesList.map((schedule, index) => {
+          slotsList.map((slot, index) => {
             return (
               <Button
                 key={formatDateToDDMMYYYY(dateSelected) + "-" + index}
                 className="schedule"
-                onClick={() => addingSchedule(schedule)}
+                onClick={() => addingSlots(slot)}
                 variant={
-                  schedule.startDate.toString() in scheduleSelected
+                  slot.startDate.toString() in slotsSelected
                     ? "contained"
                     : "outlined"
                 }
-                disabled={schedule.booked}
+                disabled={slot.booked}
               >
-                {getHours(schedule.startDate) +
-                  " - " +
-                  getHours(schedule.endDate)}
+                {getHours(slot.startDate) + " - " + getHours(slot.endDate)}
               </Button>
             );
           })
@@ -69,12 +67,12 @@ export default function Sidemenu({
       </div>
       <div className="shopping-cart">
         <span>
-          Créneau(x) sélectionné(s): {Object.keys(scheduleSelected).length}
+          Créneau(x) sélectionné(s): {Object.keys(slotsSelected).length}
         </span>
         <Button
           className="payer-button"
           variant="contained"
-          disabled={Object.keys(scheduleSelected).length == 0}
+          disabled={Object.keys(slotsSelected).length == 0}
           onClick={() => setOpenRecapModal(true)}
         >
           Payer
