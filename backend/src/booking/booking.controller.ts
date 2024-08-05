@@ -30,9 +30,9 @@ export class BookingController {
 
   @Post('/bookRequest')
   async bookSlotRequest(
-    @Body() BookingRequestDto: BookingRequestDto,
+    @Body() bookingRequestDto: BookingRequestDto,
   ): Promise<String> {
-    return this.bookingService.bookingRequest(BookingRequestDto);
+    return this.bookingService.bookingRequest(bookingRequestDto);
   }
 
   @Post('/bookConfirmation')

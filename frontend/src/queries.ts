@@ -51,6 +51,9 @@ export async function makeBookingRequest(
   });
   const response = await fetch(`http://localhost:3000/bookings/bookRequest`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ priceInCent, email, bookings }),
   });
   if (!response.ok) {
