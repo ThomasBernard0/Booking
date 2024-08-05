@@ -16,9 +16,9 @@ export class BookingController {
 
   @Get('/availabilities')
   async getAvailableSlotsFor(
-    @Query('date') date: Date,
+    @Query('date') dateString: string,
   ): Promise<AvailableSlot[]> {
-    return this.availabilityService.getAvailableSlotsFor(date);
+    return this.availabilityService.getAvailableSlotsFor(dateString);
   }
 
   @Get('price/:numberOfSchedules')

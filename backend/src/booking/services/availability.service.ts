@@ -3,7 +3,10 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { Booking, BookingRequestStatus } from '@prisma/client';
 import { AvailableSlot } from '../dtos/AvailableSlot.dto';
 import { BookingDto } from '../dtos/Booking.dto';
-import { createDateTimeWithHours } from 'src/utils/dateUtils';
+import {
+  createDateTimeWithHours,
+  formatDDMMYYYYToDate,
+} from 'src/utils/dateUtils';
 import getDefaultSlotsByDay from 'src/utils/constants/slots.constants';
 
 @Injectable()
@@ -20,15 +23,18 @@ export class AvailabilityService {
     return areBookingsAvailable;
   }
 
-  public async getAvailableSlotsFor(date: Date): Promise<AvailableSlot[]> {
-    const endDate = new Date(date);
+  public async getAvailableSlotsFor(
+    dateString: string,
+  ): Promise<AvailableSlot[]> {
+    const startDate = formatDDMMYYYYToDate(dateString);
+    const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 1);
     const bookingList = await this.getDoneOrPendingBookingsBetween(
-      date,
+      startDate,
       endDate,
     );
     const defaultAvailableSlotsList: AvailableSlot[] =
-      this.getDefaultAvailableSlotsFor(date);
+      this.getDefaultAvailableSlotsFor(startDate);
     const availableSlotsList = defaultAvailableSlotsList.map(
       (availableSlot) => {
         const hasConcurrentPeriod = bookingList.some((booking) => {

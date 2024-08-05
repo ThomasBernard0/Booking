@@ -5,7 +5,7 @@ export function createDateTimeWithHours(date: Date, timeStr: string): Date {
   return dateTime;
 }
 
-function createDateUTC(date: Date): Date {
+export function createDateUTC(date: Date): Date {
   const localDate = new Date(date);
   const utcDate = new Date(
     Date.UTC(
@@ -19,6 +19,12 @@ function createDateUTC(date: Date): Date {
     ),
   );
   return utcDate;
+}
+
+export function formatDDMMYYYYToDate(dateString: string): Date {
+  const [day, month, year] = dateString.split('-');
+  const formattedDate = new Date(`${year}-${month}-${day}`);
+  return formattedDate;
 }
 
 export function formatDateToFrenchLocale(date: Date | null): string {
