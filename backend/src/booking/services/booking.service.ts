@@ -25,7 +25,8 @@ export class BookingService {
       throw new Error('Slots not available');
     }
 
-    const payment_id = await this.paymentService.makePayment();
+    const payment_id = await this.paymentService.createStripeCheckoutSession();
+
     await this.prisma.bookingRequest.create({
       data: {
         payment_id,
@@ -45,6 +46,7 @@ export class BookingService {
         },
       },
     });
+
     return payment_id;
   }
 

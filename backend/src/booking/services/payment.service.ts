@@ -9,7 +9,7 @@ import { BookingDto } from '../dtos/Booking.dto';
 export class PaymentService {
   constructor() {}
 
-  public async makePayment(): Promise<string> {
+  public async createStripeCheckoutSession(): Promise<string> {
     const payment_id = uuidv4();
     return payment_id;
   }
