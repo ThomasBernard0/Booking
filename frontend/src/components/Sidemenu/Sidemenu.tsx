@@ -57,7 +57,7 @@ export default function Sidemenu({
                     ? "contained"
                     : "outlined"
                 }
-                disabled={slot.booked}
+                disabled={!slot.available}
               >
                 {getHours(slot.startDate) + " - " + getHours(slot.endDate)}
               </Button>
