@@ -1,20 +1,8 @@
-export function formatDateToDDMMYYYY(date: Date | null): string {
-  if (!date) return "";
-  let dateObj: Date;
-  if (typeof date === "string") {
-    dateObj = new Date(date);
-  } else {
-    dateObj = date;
-  }
-  const day = dateObj.getDate();
-  const month = dateObj.getMonth() + 1;
-  const year = dateObj.getFullYear();
-  return `${day}-${month}-${year}`;
-}
-
 export function formatDDMMYYYYToDate(dateString: string): Date {
   const [day, month, year] = dateString.split("-");
-  const formattedDate = new Date(`${year}-${month}-${day}`);
+  const formattedDate = new Date(
+    Date.UTC(Number(year), Number(month) - 1, Number(day), 0, 0, 0)
+  );
   return formattedDate;
 }
 
@@ -36,11 +24,6 @@ export function formatDateToFrenchLocale(date: Date | null): string {
   return frenchDate.charAt(0).toUpperCase() + frenchDate.slice(1);
 }
 
-export function formatDDMMYYYYToFrenchLocale(dateString: string): string {
-  const date = formatDDMMYYYYToDate(dateString);
-  return formatDateToFrenchLocale(date);
-}
-
 export function getHours(date: Date | null): string {
   if (!date) return "";
   let dateObj: Date;
@@ -52,4 +35,23 @@ export function getHours(date: Date | null): string {
   const hour = dateObj.getUTCHours().toString();
   const minute = dateObj.getUTCMinutes().toString();
   return `${hour}:${minute.padStart(2, "0")}`;
+}
+
+export function formatDateToDDMMYYYY(date: Date | null): string {
+  if (!date) return "";
+  let dateObj: Date;
+  if (typeof date === "string") {
+    dateObj = new Date(date);
+  } else {
+    dateObj = date;
+  }
+  const day = dateObj.getDate();
+  const month = dateObj.getMonth() + 1;
+  const year = dateObj.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+export function formatDDMMYYYYToFrenchLocale(dateString: string): string {
+  const date = formatDDMMYYYYToDate(dateString);
+  return formatDateToFrenchLocale(date);
 }

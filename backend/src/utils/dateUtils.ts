@@ -1,29 +1,8 @@
-export function createDateTimeWithHours(date: Date, timeStr: string): Date {
-  const dateTime = createDateUTC(date);
-  const [hours, minutes] = timeStr.split(':').map(Number);
-  dateTime.setUTCHours(hours, minutes);
-  return dateTime;
-}
-
-export function createDateUTC(date: Date): Date {
-  const localDate = new Date(date);
-  const utcDate = new Date(
-    Date.UTC(
-      localDate.getUTCFullYear(),
-      localDate.getUTCMonth(),
-      localDate.getUTCDate(),
-      localDate.getUTCHours(),
-      localDate.getUTCMinutes(),
-      localDate.getUTCSeconds(),
-      localDate.getUTCMilliseconds(),
-    ),
-  );
-  return utcDate;
-}
-
 export function formatDDMMYYYYToDate(dateString: string): Date {
   const [day, month, year] = dateString.split('-');
-  const formattedDate = new Date(`${year}-${month}-${day}`);
+  const formattedDate = new Date(
+    Date.UTC(Number(year), Number(month) - 1, Number(day), 0, 0, 0),
+  );
   return formattedDate;
 }
 
@@ -56,4 +35,11 @@ export function getHours(date: Date | null): string {
   const hour = dateObj.getUTCHours().toString();
   const minute = dateObj.getUTCMinutes().toString();
   return `${hour}:${minute.padStart(2, '0')}`;
+}
+
+export function createDateTimeWithHours(date: Date, timeStr: string): Date {
+  const dateTime = new Date(date);
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  dateTime.setUTCHours(hours, minutes);
+  return dateTime;
 }

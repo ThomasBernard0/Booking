@@ -70,12 +70,12 @@ export class AvailabilityService {
         AND: [
           {
             startDate: {
-              lt: new Date(endDate),
+              lt: endDate,
             },
           },
           {
             endDate: {
-              gt: new Date(startDate),
+              gt: startDate,
             },
           },
           {
