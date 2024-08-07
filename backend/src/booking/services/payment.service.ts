@@ -15,9 +15,6 @@ export class PaymentService {
   }
 
   async verifyPayment(payment_id: string): Promise<boolean> {
-    if (Math.floor(Math.random() * 10) <= 1) {
-      return false;
-    }
     return true;
   }
 
