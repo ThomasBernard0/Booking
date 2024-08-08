@@ -41,4 +41,9 @@ export class BookingController {
   ): Promise<void> {
     return this.bookingService.makeABooking(body.payment_id);
   }
+
+  @Post('/bookCancel')
+  async bookSlotCancel(@Body() body: { payment_id: string }): Promise<void> {
+    return this.bookingService.cancelABooking(body.payment_id);
+  }
 }

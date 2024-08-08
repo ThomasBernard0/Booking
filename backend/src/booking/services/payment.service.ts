@@ -14,7 +14,11 @@ export class PaymentService {
     return payment_id;
   }
 
-  async verifyPayment(payment_id: string): Promise<boolean> {
+  async verifySuccessfulPayment(payment_id: string): Promise<boolean> {
+    return true;
+  }
+
+  async verifyCanceledPayment(payment_id: string): Promise<boolean> {
     return true;
   }
 

@@ -56,7 +56,7 @@ export class BookingService {
     }
 
     const payment_successful =
-      await this.paymentService.verifyPayment(payment_id);
+      await this.paymentService.verifySuccessfulPayment(payment_id);
     if (!payment_successful) {
       throw new Error('Payment not successful');
     }
@@ -79,6 +79,31 @@ export class BookingService {
       datesCodesList,
       bookingRequest.email,
     );
+  }
+
+  public async cancelABooking(payment_id: string) {
+    if (!payment_id) {
+      throw new Error('Cancel not made');
+    }
+
+    const payment_successful =
+      await this.paymentService.verifyCanceledPayment(payment_id);
+    if (!payment_successful) {
+      throw new Error('Payment not canceled');
+    }
+
+    const bookingRequest = await this.prisma.bookingRequest.update({
+      where: {
+        payment_id: payment_id,
+      },
+      data: { status: BookingRequestStatus.CANCELED },
+      include: {
+        bookings: true,
+      },
+    });
+    if (!bookingRequest) {
+      throw new Error();
+    }
   }
 
   getCodes(bookings: Booking[]): { date: string; code: string }[] {
