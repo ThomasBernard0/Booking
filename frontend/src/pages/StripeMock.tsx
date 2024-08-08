@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 export default function StripeMock() {
   const location = useLocation();

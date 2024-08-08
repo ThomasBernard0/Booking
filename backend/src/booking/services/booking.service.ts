@@ -61,15 +61,10 @@ export class BookingService {
       throw new Error('Payment not successful');
     }
 
-    const bookingRequest = await this.prisma.bookingRequest.update({
-      where: {
-        payment_id: payment_id,
-      },
-      data: { status: BookingRequestStatus.DONE },
-      include: {
-        bookings: true,
-      },
-    });
+    const bookingRequest = await this.updateBookingRequestStatusWherePaymentId(
+      payment_id,
+      BookingRequestStatus.DONE,
+    );
     if (!bookingRequest) {
       throw new Error();
     }
@@ -92,18 +87,28 @@ export class BookingService {
       throw new Error('Payment not canceled');
     }
 
-    const bookingRequest = await this.prisma.bookingRequest.update({
+    const bookingRequest = await this.updateBookingRequestStatusWherePaymentId(
+      payment_id,
+      BookingRequestStatus.CANCELED,
+    );
+    if (!bookingRequest) {
+      throw new Error();
+    }
+  }
+
+  async updateBookingRequestStatusWherePaymentId(
+    payment_id: string,
+    status: BookingRequestStatus,
+  ) {
+    return await this.prisma.bookingRequest.update({
       where: {
         payment_id: payment_id,
       },
-      data: { status: BookingRequestStatus.CANCELED },
+      data: { status: status },
       include: {
         bookings: true,
       },
     });
-    if (!bookingRequest) {
-      throw new Error();
-    }
   }
 
   getCodes(bookings: Booking[]): { date: string; code: string }[] {
