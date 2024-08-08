@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useStripe } from "@stripe/react-stripe-js";
 import "./RecapModal.css";
 import { Slot } from "../../types/slot";
 import { makeBookingRequest, usePrice } from "../../queries";
@@ -43,7 +43,7 @@ export default function RecapModal({
   setOpenRecapModal,
   slotsSelected,
 }: Props) {
-  const navigate = useNavigate();
+  const stripe = useStripe();
   const { priceInCent, isLoading } = usePrice(
     openRecapModal,
     Object.keys(slotsSelected).length
@@ -88,9 +88,12 @@ export default function RecapModal({
         email,
         slotsSelected
       );
-      navigate("/payment", { state: { payment_id: payment_id } });
-    } catch {
-      return;
+      if (!stripe) return;
+      await stripe.redirectToCheckout({
+        sessionId: payment_id,
+      });
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
   return (
