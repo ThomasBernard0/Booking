@@ -28,10 +28,10 @@ export class BookingService {
     }
 
     const payment_id = await this.stripeService.createCheckoutSession(
+      1000,
       1,
-      1,
-      'test',
-      'test',
+      'http://test',
+      'http://test',
     );
 
     await this.prisma.bookingRequest.create({

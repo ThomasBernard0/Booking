@@ -5,6 +5,7 @@ import { BookingService } from './services/booking.service';
 import { AvailabilityService } from './services/availability.service';
 import { PaymentService } from './services/payment.service';
 import { EmailService } from './services/email.service';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Module({
   imports: [PrismaModule],
@@ -14,6 +15,7 @@ import { EmailService } from './services/email.service';
     AvailabilityService,
     PaymentService,
     EmailService,
+    StripeService,
   ],
 })
 export class BookingModule {}
