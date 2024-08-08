@@ -63,3 +63,20 @@ export async function makeBookingRequest(
   const payment_id = await response.text();
   return payment_id;
 }
+
+export async function confirmBookings(payment_id: string) {
+  const response = await fetch(
+    `http://localhost:3000/bookings/bookConfirmation`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payment_id }),
+    }
+  );
+  if (!response.ok) {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage);
+  }
+}

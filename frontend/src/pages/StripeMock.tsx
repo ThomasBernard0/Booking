@@ -7,10 +7,10 @@ export default function StripeMock() {
   const { payment_id } = location.state;
   const navigate = useNavigate();
   const functionBuy = () => {
-    if (Math.floor(Math.random() * 10) <= 1) {
-      navigate(`/success?session_id${payment_id}}`);
+    if (Math.floor(Math.random() * 10) <= 8) {
+      navigate(`/success?session_id=${payment_id}`);
     } else {
-      navigate(`/error?session_id${payment_id}}`);
+      navigate(`/error?session_id=${payment_id}`);
     }
   };
   return (
