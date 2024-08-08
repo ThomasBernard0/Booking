@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { EmailService } from './email.service';
 import { PaymentService } from './payment.service';
 import { AvailabilityService } from './availability.service';
+import { StripeService } from 'src/stripe/stripe.service';
 import { BookingRequestDto } from '../dtos/BookingRequest.dto';
 import { Booking, BookingRequestStatus } from '@prisma/client';
 import { BookingDto } from '../dtos/Booking.dto';
@@ -15,6 +16,7 @@ export class BookingService {
     private readonly availabilityService: AvailabilityService,
     private readonly paymentService: PaymentService,
     private readonly emailService: EmailService,
+    private readonly stripeService: StripeService,
   ) {}
 
   public async bookingRequest(bookingRequestDto: BookingRequestDto) {
@@ -25,7 +27,12 @@ export class BookingService {
       throw new Error('Slots not available');
     }
 
-    const payment_id = await this.paymentService.createStripeCheckoutSession();
+    const payment_id = await this.stripeService.createCheckoutSession(
+      1,
+      1,
+      'test',
+      'test',
+    );
 
     await this.prisma.bookingRequest.create({
       data: {
