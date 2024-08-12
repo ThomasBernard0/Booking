@@ -14,8 +14,8 @@ export class BookingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly availabilityService: AvailabilityService,
-    private readonly paymentService: PaymentService,
     private readonly emailService: EmailService,
+    private readonly paymentService: PaymentService,
     @Inject(forwardRef(() => StripeService))
     private readonly stripeService: StripeService,
   ) {}
@@ -29,8 +29,8 @@ export class BookingService {
     }
 
     const payment_id = await this.stripeService.createCheckoutSession(
-      1000,
-      1,
+      this.paymentService.getUnitPriceInCent(),
+      bookingRequestDto.bookings.length,
       'http://localhost:5173/success',
       'http://localhost:5173/error',
     );
@@ -38,7 +38,9 @@ export class BookingService {
     await this.prisma.bookingRequest.create({
       data: {
         payment_id,
-        priceInCent: bookingRequestDto.priceInCent,
+        priceInCent: this.paymentService.getPriceInCent(
+          bookingRequestDto.bookings.length,
+        ),
         email: bookingRequestDto.email,
         status: BookingRequestStatus.PENDING,
         bookings: {
@@ -63,19 +65,10 @@ export class BookingService {
       throw new Error('Payment not made');
     }
 
-    const payment_successful =
-      await this.paymentService.verifySuccessfulPayment(payment_id);
-    if (!payment_successful) {
-      throw new Error('Payment not successful');
-    }
-
     const bookingRequest = await this.updateBookingRequestStatusWherePaymentId(
       payment_id,
       BookingRequestStatus.DONE,
     );
-    if (!bookingRequest) {
-      throw new Error();
-    }
 
     const datesCodesList = this.getCodes(bookingRequest.bookings);
     await this.emailService.sendBookingConfirmation(
@@ -89,19 +82,10 @@ export class BookingService {
       throw new Error('Cancel not made');
     }
 
-    const payment_successful =
-      await this.paymentService.verifyCanceledPayment(payment_id);
-    if (!payment_successful) {
-      throw new Error('Payment not canceled');
-    }
-
-    const bookingRequest = await this.updateBookingRequestStatusWherePaymentId(
+    await this.updateBookingRequestStatusWherePaymentId(
       payment_id,
       BookingRequestStatus.CANCELED,
     );
-    if (!bookingRequest) {
-      throw new Error();
-    }
   }
 
   async updateBookingRequestStatusWherePaymentId(

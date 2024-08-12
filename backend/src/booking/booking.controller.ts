@@ -24,7 +24,7 @@ export class BookingController {
   async getPrice(
     @Param('numberOfSchedules') numberOfSchedules: number,
   ): Promise<number> {
-    return this.paymentService.getPrice(numberOfSchedules);
+    return this.paymentService.getPriceInCent(numberOfSchedules);
   }
 
   @Post('/bookRequest')

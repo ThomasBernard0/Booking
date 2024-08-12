@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { unitPriceInCent } from 'src/utils/constants/price.constants';
 
 @Injectable()
 export class PaymentService {
   constructor() {}
 
-  async verifySuccessfulPayment(payment_id: string): Promise<boolean> {
-    return true;
+  getUnitPriceInCent(): number {
+    return unitPriceInCent;
   }
 
-  async verifyCanceledPayment(payment_id: string): Promise<boolean> {
-    return true;
-  }
-
-  async getPrice(numberOfSchedules: number): Promise<number> {
-    return numberOfSchedules * 800;
+  getPriceInCent(numberOfSchedules: number): number {
+    return numberOfSchedules * unitPriceInCent;
   }
 }
