@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmailService } from './email.service';
 import { PaymentService } from './payment.service';
@@ -16,6 +16,7 @@ export class BookingService {
     private readonly availabilityService: AvailabilityService,
     private readonly paymentService: PaymentService,
     private readonly emailService: EmailService,
+    @Inject(forwardRef(() => StripeService))
     private readonly stripeService: StripeService,
   ) {}
 
@@ -30,8 +31,8 @@ export class BookingService {
     const payment_id = await this.stripeService.createCheckoutSession(
       1000,
       1,
-      'http://test',
-      'http://test',
+      'http://success',
+      'http://error',
     );
 
     await this.prisma.bookingRequest.create({
