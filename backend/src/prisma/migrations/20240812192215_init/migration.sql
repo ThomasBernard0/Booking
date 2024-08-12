@@ -4,21 +4,12 @@ CREATE TYPE "BookingRequestStatus" AS ENUM ('PENDING', 'DONE', 'CANCELED');
 -- CreateTable
 CREATE TABLE "BookingRequest" (
     "id" SERIAL NOT NULL,
-    "payment_id" TEXT NOT NULL,
+    "sessionId" TEXT NOT NULL,
     "priceInCent" INTEGER NOT NULL,
     "email" TEXT NOT NULL,
     "status" "BookingRequestStatus" NOT NULL,
 
     CONSTRAINT "BookingRequest_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "BookingRequestQueue" (
-    "id" SERIAL NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
-    "bookingRequestId" INTEGER NOT NULL,
-
-    CONSTRAINT "BookingRequestQueue_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -32,13 +23,7 @@ CREATE TABLE "Booking" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "BookingRequest_payment_id_key" ON "BookingRequest"("payment_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "BookingRequestQueue_bookingRequestId_key" ON "BookingRequestQueue"("bookingRequestId");
-
--- AddForeignKey
-ALTER TABLE "BookingRequestQueue" ADD CONSTRAINT "BookingRequestQueue_bookingRequestId_fkey" FOREIGN KEY ("bookingRequestId") REFERENCES "BookingRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+CREATE UNIQUE INDEX "BookingRequest_sessionId_key" ON "BookingRequest"("sessionId");
 
 -- AddForeignKey
 ALTER TABLE "Booking" ADD CONSTRAINT "Booking_bookingRequestId_fkey" FOREIGN KEY ("bookingRequestId") REFERENCES "BookingRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

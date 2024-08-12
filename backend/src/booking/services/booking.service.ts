@@ -50,11 +50,6 @@ export class BookingService {
             endDate: new Date(booking.endDate),
           })),
         },
-        BookingRequestQueue: {
-          create: {
-            date: new Date(),
-          },
-        },
       },
     });
 
