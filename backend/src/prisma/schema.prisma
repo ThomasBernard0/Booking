@@ -14,20 +14,12 @@ enum BookingRequestStatus {
 }
 
 model BookingRequest {
-  id                  Int                  @id @default(autoincrement())
-  payment_id          String               @unique
-  priceInCent         Int
-  email               String
-  status              BookingRequestStatus
-  bookings            Booking[]
-  BookingRequestQueue BookingRequestQueue?
-}
-
-model BookingRequestQueue {
-  id               Int            @id @default(autoincrement())
-  date             DateTime
-  bookingRequestId Int            @unique
-  bookingRequest   BookingRequest @relation(fields: [bookingRequestId], references: [id])
+  id          Int                  @id @default(autoincrement())
+  sessionId   String               @unique
+  priceInCent Int
+  email       String
+  status      BookingRequestStatus
+  bookings    Booking[]
 }
 
 model Booking {

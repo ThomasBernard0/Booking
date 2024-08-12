@@ -83,14 +83,14 @@ export default function RecapModal({
 
   const handlePayment = async () => {
     try {
-      const payment_id = await makeBookingRequest(
+      const sessionId = await makeBookingRequest(
         priceInCent,
         email,
         slotsSelected
       );
       if (!stripe) return;
       await stripe.redirectToCheckout({
-        sessionId: payment_id,
+        sessionId: sessionId,
       });
     } catch (error) {
       console.error("Error:", error);

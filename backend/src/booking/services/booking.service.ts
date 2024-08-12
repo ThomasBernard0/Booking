@@ -29,7 +29,7 @@ export class BookingService {
       throw new Error('Slots not available');
     }
 
-    const payment_id = await this.stripeService.createCheckoutSession(
+    const sessionId = await this.stripeService.createCheckoutSession(
       this.paymentService.getUnitPriceInCent(),
       bookingRequestDto.bookings.length,
       'http://localhost:5173/success',
@@ -38,7 +38,7 @@ export class BookingService {
 
     await this.prisma.bookingRequest.create({
       data: {
-        payment_id,
+        sessionId,
         priceInCent: this.paymentService.getPriceInCent(
           bookingRequestDto.bookings.length,
         ),
@@ -58,7 +58,7 @@ export class BookingService {
       },
     });
 
-    return payment_id;
+    return sessionId;
   }
 
   public async makeABooking(session: Stripe.Checkout.Session) {
@@ -73,7 +73,7 @@ export class BookingService {
 
     const bookingRequest = await this.prisma.bookingRequest.update({
       where: {
-        payment_id: session.id,
+        sessionId: session.id,
       },
       data: { status: BookingRequestStatus.DONE, email: email },
       include: {
@@ -92,7 +92,7 @@ export class BookingService {
 
     await this.prisma.bookingRequest.update({
       where: {
-        payment_id: session.id,
+        sessionId: session.id,
       },
       data: { status: BookingRequestStatus.CANCELED },
       include: {
