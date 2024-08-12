@@ -41,11 +41,9 @@ export function usePrice(openRecapModal: boolean, numberOfSchedules: number) {
   return { priceInCent, isLoading };
 }
 
-export async function makeBookingRequest(
-  priceInCent: number,
-  email: string,
-  slotsSelected: { [key: string]: Slot }
-) {
+export async function makeBookingRequest(slotsSelected: {
+  [key: string]: Slot;
+}) {
   const bookings = Object.values(slotsSelected).map((slot) => {
     return { startDate: slot.startDate, endDate: slot.endDate };
   });
@@ -54,7 +52,7 @@ export async function makeBookingRequest(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ priceInCent, email, bookings }),
+    body: JSON.stringify({ bookings }),
   });
   if (!response.ok) {
     const errorMessage = await response.text();

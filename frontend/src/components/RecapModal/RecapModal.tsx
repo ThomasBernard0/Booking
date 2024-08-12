@@ -34,10 +34,6 @@ type recapSlotMap = {
   [key: string]: Slot[];
 };
 
-const isEmail = (email: string) => {
-  return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
 export default function RecapModal({
   openRecapModal,
   setOpenRecapModal,
@@ -48,7 +44,6 @@ export default function RecapModal({
     openRecapModal,
     Object.keys(slotsSelected).length
   );
-  const [email, setEmail] = useState<string>("");
   const [recapSlotMap, setRecapSlotMap] = useState<recapSlotMap>({});
 
   useEffect(() => {
@@ -83,11 +78,7 @@ export default function RecapModal({
 
   const handlePayment = async () => {
     try {
-      const sessionId = await makeBookingRequest(
-        priceInCent,
-        email,
-        slotsSelected
-      );
+      const sessionId = await makeBookingRequest(slotsSelected);
       if (!stripe) return;
       await stripe.redirectToCheckout({
         sessionId: sessionId,
@@ -144,29 +135,13 @@ export default function RecapModal({
                 <Currency price={priceInCent} />
               )}
             </div>
-            <div className="email-container">
-              <span>
-                Veuillez saisir l'adresse e-mail sur laquelle vous voulez
-                recevoir vos codes :
-              </span>
-              <TextField
-                label="Email"
-                type="email"
-                variant="outlined"
-                style={{ width: "600px" }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={isEmail(email)}
-                required
-              />
-            </div>
-          </div>
+           <div>Vos codes seront envoyés à l'adresse email renseignée lors du paiement</div>
         </div>
       </DialogContent>
       <DialogActions>
         <Button
           variant="contained"
-          disabled={isEmail(email) || priceInCent == 0}
+          disabled={priceInCent == 0}
           onClick={handlePayment}
         >
           Payer
