@@ -31,8 +31,8 @@ export class BookingService {
     const payment_id = await this.stripeService.createCheckoutSession(
       1000,
       1,
-      'http://success',
-      'http://error',
+      'http://localhost:5173/success',
+      'http://localhost:5173/error',
     );
 
     await this.prisma.bookingRequest.create({
