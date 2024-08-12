@@ -4,7 +4,6 @@ import { AvailableSlot } from './dtos/AvailableSlot.dto';
 import { AvailabilityService } from './services/availability.service';
 import { PaymentService } from './services/payment.service';
 import { BookingRequestDto } from './dtos/BookingRequest.dto';
-import { BookingRequest } from '@prisma/client';
 
 @Controller('bookings')
 export class BookingController {
