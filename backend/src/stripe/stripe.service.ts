@@ -34,12 +34,14 @@ export class StripeService {
   public async handleWebhook(event: Stripe.Event) {
     switch (event.type) {
       case 'checkout.session.completed':
-        const compledtedSessionId: string = event.data.object.id;
-        await this.bookingService.makeABooking(compledtedSessionId);
+        await this.bookingService.makeABooking(
+          event.data.object as Stripe.Checkout.Session,
+        );
         break;
       case 'checkout.session.expired':
-        const expiredSessionId: string = event.data.object.id;
-        await this.bookingService.cancelABooking(expiredSessionId);
+        await this.bookingService.cancelABooking(
+          event.data.object as Stripe.Checkout.Session,
+        );
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);

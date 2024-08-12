@@ -8,6 +8,7 @@ import { BookingRequestDto } from '../dtos/BookingRequest.dto';
 import { Booking, BookingRequestStatus } from '@prisma/client';
 import { BookingDto } from '../dtos/Booking.dto';
 import { formatDateToFrenchLocale, getHours } from 'src/utils/dateUtils';
+import Stripe from 'stripe';
 
 @Injectable()
 export class BookingService {
@@ -41,7 +42,7 @@ export class BookingService {
         priceInCent: this.paymentService.getPriceInCent(
           bookingRequestDto.bookings.length,
         ),
-        email: bookingRequestDto.email,
+        email: '',
         status: BookingRequestStatus.PENDING,
         bookings: {
           create: bookingRequestDto.bookings.map((booking: BookingDto) => ({
@@ -60,43 +61,40 @@ export class BookingService {
     return payment_id;
   }
 
-  public async makeABooking(payment_id: string) {
-    if (!payment_id) {
-      throw new Error('Payment not made');
+  public async makeABooking(session: Stripe.Checkout.Session) {
+    if (!session.id) {
+      throw new Error('Error with the checkout session');
     }
 
-    const bookingRequest = await this.updateBookingRequestStatusWherePaymentId(
-      payment_id,
-      BookingRequestStatus.DONE,
-    );
+    const email = session.customer_details?.email;
+    if (!email) {
+      throw new Error('Error with the email');
+    }
+
+    const bookingRequest = await this.prisma.bookingRequest.update({
+      where: {
+        payment_id: session.id,
+      },
+      data: { status: BookingRequestStatus.DONE, email: email },
+      include: {
+        bookings: true,
+      },
+    });
 
     const datesCodesList = this.getCodes(bookingRequest.bookings);
-    await this.emailService.sendBookingConfirmation(
-      datesCodesList,
-      bookingRequest.email,
-    );
+    await this.emailService.sendBookingConfirmation(datesCodesList, email);
   }
 
-  public async cancelABooking(payment_id: string) {
-    if (!payment_id) {
-      throw new Error('Cancel not made');
+  public async cancelABooking(session: Stripe.Checkout.Session) {
+    if (!session.id) {
+      throw new Error('Error with the checkout session');
     }
 
-    await this.updateBookingRequestStatusWherePaymentId(
-      payment_id,
-      BookingRequestStatus.CANCELED,
-    );
-  }
-
-  async updateBookingRequestStatusWherePaymentId(
-    payment_id: string,
-    status: BookingRequestStatus,
-  ) {
-    return await this.prisma.bookingRequest.update({
+    await this.prisma.bookingRequest.update({
       where: {
-        payment_id: payment_id,
+        payment_id: session.id,
       },
-      data: { status: status },
+      data: { status: BookingRequestStatus.CANCELED },
       include: {
         bookings: true,
       },
