@@ -28,12 +28,12 @@ export default function Appointment() {
             setOpenRecapModal={setOpenRecapModal}
           />
         )}
-        <RecapModal
-          openRecapModal={openRecapModal}
-          setOpenRecapModal={setOpenRecapModal}
-          slotsSelected={slotsSelected}
-        />
       </div>
+      <RecapModal
+        openRecapModal={openRecapModal}
+        setOpenRecapModal={setOpenRecapModal}
+        slotsSelected={slotsSelected}
+      />
     </Elements>
   );
 }

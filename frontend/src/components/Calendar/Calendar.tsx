@@ -20,7 +20,10 @@ export default function Calendar({ setDateSelected }: Props) {
             width: "100%",
             maxWidth: "600px",
             height: "auto",
-            maxHeight: "650px",
+            maxHeight: "100%",
+            "& .MuiPickersSlideTransition-root": {
+              minHeight: "500px",
+            },
             "& .MuiPickersCalendarHeader-labelContainer": {
               fontSize: {
                 xs: "1rem",
