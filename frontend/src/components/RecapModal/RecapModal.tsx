@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  TextField,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import {
@@ -135,7 +134,11 @@ export default function RecapModal({
                 <Currency price={priceInCent} />
               )}
             </div>
-           <div>Vos codes seront envoyés à l'adresse email renseignée lors du paiement</div>
+            <div>
+              Vos codes seront envoyés à l'adresse email renseignée lors du
+              paiement
+            </div>
+          </div>
         </div>
       </DialogContent>
       <DialogActions>
