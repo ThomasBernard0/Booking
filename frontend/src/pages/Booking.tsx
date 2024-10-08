@@ -5,6 +5,7 @@ import Calendar from "./../components/Calendar/Calendar";
 import Sidemenu from "./../components/Sidemenu/Sidemenu";
 import RecapModal from "./../components/RecapModal/RecapModal";
 import { Slot } from "../types/slot";
+import { Container } from "@mui/material";
 
 const stripePromise = loadStripe(
   "pk_test_51PlcVmP4q1UMQeFZarQtMVWBneG4BNOro9DOpEgcz7APC6vEjDP3t6Ek1FFhIDcrMD7Larddt1G0TAv86oNkoVmz00XSuX15w3"
@@ -18,7 +19,13 @@ export default function Appointment() {
   const [openRecapModal, setOpenRecapModal] = useState<boolean>(false);
   return (
     <Elements stripe={stripePromise}>
-      <div className="appointment-wrapper">
+      <Container
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
         <Calendar setDateSelected={setDateSelected} />
         {dateSelected && (
           <Sidemenu
@@ -28,7 +35,7 @@ export default function Appointment() {
             setOpenRecapModal={setOpenRecapModal}
           />
         )}
-      </div>
+      </Container>
       <RecapModal
         openRecapModal={openRecapModal}
         setOpenRecapModal={setOpenRecapModal}

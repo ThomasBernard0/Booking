@@ -2,7 +2,7 @@ import React from "react";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 
 type Props = {
   setDateSelected: React.Dispatch<React.SetStateAction<Date | null>>;
@@ -10,7 +10,7 @@ type Props = {
 
 export default function Calendar({ setDateSelected }: Props) {
   return (
-    <Box sx={{ padding: 2 }}>
+    <Container sx={{ padding: 2 }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DateCalendar
           onChange={(value) => setDateSelected(value)}
@@ -22,7 +22,10 @@ export default function Calendar({ setDateSelected }: Props) {
             height: "auto",
             maxHeight: "100%",
             "& .MuiPickersSlideTransition-root": {
-              minHeight: "500px",
+              minHeight: {
+                xs: "260px",
+                sm: "500px",
+              },
             },
             "& .MuiPickersCalendarHeader-labelContainer": {
               fontSize: {
@@ -59,6 +62,6 @@ export default function Calendar({ setDateSelected }: Props) {
           }}
         />
       </LocalizationProvider>
-    </Box>
+    </Container>
   );
 }
