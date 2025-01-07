@@ -1,6 +1,7 @@
 import React from "react";
 import "./Currency.css";
 import { FormattedNumber, IntlProvider } from "react-intl";
+import { Typography } from "@mui/material";
 
 type Props = {
   price: number;
@@ -9,9 +10,14 @@ type Props = {
 export default function Currency({ price }: Props) {
   return (
     <IntlProvider locale="fr">
-      <span className="formatted-number">
+      <Typography
+        sx={{
+          fontSize: "24px",
+          fontWeight: "bold",
+        }}
+      >
         <FormattedNumber value={price / 100} style="currency" currency="EUR" />{" "}
-      </span>
+      </Typography>
     </IntlProvider>
   );
 }
