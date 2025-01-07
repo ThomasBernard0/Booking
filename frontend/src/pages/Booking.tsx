@@ -24,6 +24,7 @@ export default function Appointment() {
           display: "flex",
           alignItems: "center",
           flexDirection: { xs: "column", sm: "row" },
+          minHeight: "100vh",
         }}
       >
         <Calendar setDateSelected={setDateSelected} />
