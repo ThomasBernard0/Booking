@@ -3,7 +3,7 @@ import { useStripe } from "@stripe/react-stripe-js";
 import "./RecapModal.css";
 import { Slot } from "../../types/slot";
 import { makeBookingRequest, usePrice } from "../../queries";
-import Currency from "../Currency/Currency";
+import Currency from "../Currency";
 import {
   Button,
   CircularProgress,

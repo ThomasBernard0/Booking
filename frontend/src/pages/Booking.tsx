@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import Calendar from "./../components/Calendar/Calendar";
-import Sidemenu from "./../components/Sidemenu/Sidemenu";
+import Calendar from "../components/Calendar";
+import Sidemenu from "../components/Sidemenu";
 import RecapModal from "./../components/RecapModal/RecapModal";
 import { Slot } from "../types/slot";
 import { Container } from "@mui/material";

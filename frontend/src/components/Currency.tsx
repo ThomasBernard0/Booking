@@ -1,5 +1,4 @@
 import React from "react";
-import "./Currency.css";
 import { FormattedNumber, IntlProvider } from "react-intl";
 import { Typography } from "@mui/material";
 
