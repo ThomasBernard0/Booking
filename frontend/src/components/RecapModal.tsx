@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
-import "./RecapModal.css";
-import { Slot } from "../../types/slot";
-import { makeBookingRequest, usePrice } from "../../queries";
-import Currency from "../Currency";
+import { Slot } from "../types/slot";
+import { makeBookingRequest, usePrice } from "../queries";
+import Currency from "./Currency";
 import {
+  Box,
   Button,
   CircularProgress,
   Dialog,
@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import {
@@ -19,7 +20,7 @@ import {
   formatDDMMYYYYToDate,
   formatDDMMYYYYToFrenchLocale,
   getHours,
-} from "../../utils/dateUtils";
+} from "../utils/dateUtils";
 
 type Props = {
   openRecapModal: boolean;
@@ -112,7 +113,12 @@ export default function RecapModal({
         <Close />
       </IconButton>
       <DialogContent dividers>
-        <div className="recap-modal-content">
+        <Box
+          sx={{
+            maxHeight: "50vh",
+            overflowY: "auto",
+          }}
+        >
           {Object.keys(recapSlotMap).map((key) => (
             <div key={key}>
               <h3>{formatDDMMYYYYToFrenchLocale(key)}</h3>
@@ -125,21 +131,31 @@ export default function RecapModal({
               </ul>
             </div>
           ))}
-          <div className="price-container">
-            <div>
-              <span>Total : </span>
+          <Box
+            sx={{
+              mt: "2rem",
+              mb: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+            }}
+          >
+            <Box>
+              <Typography sx={{ fontSize: "20px" }}>Total : </Typography>
               {isLoading ? (
                 <CircularProgress />
               ) : (
                 <Currency price={priceInCent} />
               )}
-            </div>
-            <div>
-              Vos codes seront envoyés à l'adresse email renseignée lors du
-              paiement
-            </div>
-          </div>
-        </div>
+            </Box>
+            <Box>
+              <Typography>
+                Vos codes seront envoyés à l'adresse email renseignée lors du
+                paiement
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button
@@ -147,7 +163,7 @@ export default function RecapModal({
           disabled={priceInCent == 0}
           onClick={handlePayment}
         >
-          Payer
+          <Typography>Payer</Typography>
         </Button>
       </DialogActions>
     </Dialog>
