@@ -34,7 +34,20 @@ export class StripeService {
   public async handleWebhook(event: Stripe.Event) {
     switch (event.type) {
       case 'checkout.session.completed':
+        if (event.data.object.payment_status === 'paid') {
+          await this.bookingService.makeABooking(
+            event.data.object as Stripe.Checkout.Session,
+          );
+        }
+        break;
+      case 'checkout.session.async_payment_succeeded':
         await this.bookingService.makeABooking(
+          event.data.object as Stripe.Checkout.Session,
+        );
+        break;
+
+      case 'checkout.session.async_payment_failed':
+        await this.bookingService.cancelABooking(
           event.data.object as Stripe.Checkout.Session,
         );
         break;
