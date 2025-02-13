@@ -27,7 +27,7 @@ type Props = {
       [key: string]: Slot;
     }>
   >;
-  setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
+  openModal: () => void;
 };
 
 const slideInHorizontal = keyframes`
@@ -52,7 +52,7 @@ export default function Sidemenu({
   dateSelected,
   slotsSelected,
   setSlotsSelected,
-  setOpenRecapModal,
+  openModal,
 }: Props) {
   const { slotsList, isLoading } = useSlots(dateSelected);
   const theme = useTheme();
@@ -145,7 +145,7 @@ export default function Sidemenu({
           }}
           variant="contained"
           disabled={Object.keys(slotsSelected).length == 0}
-          onClick={() => setOpenRecapModal(true)}
+          onClick={openModal}
         >
           Payer
         </Button>

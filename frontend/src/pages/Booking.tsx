@@ -17,6 +17,12 @@ export default function Appointment() {
   }>({});
   const [dateSelected, setDateSelected] = useState<Date | null>(null);
   const [openRecapModal, setOpenRecapModal] = useState<boolean>(false);
+  const openModal = () => {
+    setOpenRecapModal(true);
+  };
+  const closeModal = () => {
+    setOpenRecapModal(false);
+  };
   return (
     <Elements stripe={stripePromise}>
       <Container
@@ -33,13 +39,13 @@ export default function Appointment() {
             dateSelected={dateSelected}
             slotsSelected={slotsSelected}
             setSlotsSelected={setSlotsSelected}
-            setOpenRecapModal={setOpenRecapModal}
+            openModal={openModal}
           />
         )}
       </Container>
       <RecapModal
         openRecapModal={openRecapModal}
-        setOpenRecapModal={setOpenRecapModal}
+        closeModal={closeModal}
         slotsSelected={slotsSelected}
       />
     </Elements>

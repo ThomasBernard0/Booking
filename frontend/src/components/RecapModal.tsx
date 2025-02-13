@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import { Slot } from "../types/slot";
 import { makeBookingRequest, usePrice } from "../queries";
@@ -24,7 +24,7 @@ import {
 
 type Props = {
   openRecapModal: boolean;
-  setOpenRecapModal: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
   slotsSelected: {
     [key: string]: Slot;
   };
@@ -36,7 +36,7 @@ type recapSlotMap = {
 
 export default function RecapModal({
   openRecapModal,
-  setOpenRecapModal,
+  closeModal,
   slotsSelected,
 }: Props) {
   const stripe = useStripe();
@@ -70,10 +70,6 @@ export default function RecapModal({
   }
   setRecapSlotMap(sortedMap);
 
-  const handleClose = () => {
-    setOpenRecapModal(false);
-  };
-
   const handlePayment = async () => {
     try {
       const sessionId = await makeBookingRequest(slotsSelected);
@@ -87,7 +83,7 @@ export default function RecapModal({
   };
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={closeModal}
       aria-labelledby="customized-dialog-title"
       open={openRecapModal}
       PaperProps={{
@@ -100,7 +96,7 @@ export default function RecapModal({
       <DialogTitle id="customized-dialog-title">Récapitulatif</DialogTitle>
       <IconButton
         aria-label="close"
-        onClick={handleClose}
+        onClick={closeModal}
         sx={{
           position: "absolute",
           right: 8,
