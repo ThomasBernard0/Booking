@@ -102,12 +102,8 @@ export class BookingService {
         new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
     );
     const datesCodesList = sortedBookings.map((booking) => {
-      let date = formatDateToFrenchLocale(booking.startDate);
-      date += '  ';
-      date += getHours(booking.startDate);
-      date += ' - ';
-      date += getHours(booking.endDate);
-      let code = this.createCode(booking.startDate);
+      const date = `${formatDateToFrenchLocale(booking.startDate)}   ${getHours(booking.startDate)}  -  ${getHours(booking.endDate)}`;
+      const code = this.createCode(booking.startDate);
       return { date, code };
     });
     return datesCodesList;
