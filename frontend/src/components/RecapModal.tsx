@@ -46,31 +46,29 @@ export default function RecapModal({
   );
   const [recapSlotMap, setRecapSlotMap] = useState<recapSlotMap>({});
 
-  useEffect(() => {
-    const newMap: recapSlotMap = {};
-    const slotsList = Object.values(slotsSelected);
-    slotsList.forEach((slot) => {
-      const date = formatDateToDDMMYYYY(slot.startDate);
-      if (date in newMap) {
-        newMap[date] = [...newMap[date], slot];
-      } else {
-        newMap[date] = [slot];
-      }
-    });
-    const sortedMap: recapSlotMap = {};
-    const sortedKeys = Object.keys(newMap).sort(
-      (a, b) =>
-        formatDDMMYYYYToDate(a).getTime() - formatDDMMYYYYToDate(b).getTime()
-    );
-    for (const key of sortedKeys) {
-      const sortedSchedule = newMap[key].sort(
-        (a, b) =>
-          new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      );
-      sortedMap[key] = sortedSchedule;
+  const newMap: recapSlotMap = {};
+  const slotsList = Object.values(slotsSelected);
+  slotsList.forEach((slot) => {
+    const date = formatDateToDDMMYYYY(slot.startDate);
+    if (date in newMap) {
+      newMap[date] = [...newMap[date], slot];
+    } else {
+      newMap[date] = [slot];
     }
-    setRecapSlotMap(sortedMap);
-  }, [openRecapModal]);
+  });
+  const sortedMap: recapSlotMap = {};
+  const sortedKeys = Object.keys(newMap).sort(
+    (a, b) =>
+      formatDDMMYYYYToDate(a).getTime() - formatDDMMYYYYToDate(b).getTime()
+  );
+  for (const key of sortedKeys) {
+    const sortedSchedule = newMap[key].sort(
+      (a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+    sortedMap[key] = sortedSchedule;
+  }
+  setRecapSlotMap(sortedMap);
 
   const handleClose = () => {
     setOpenRecapModal(false);
