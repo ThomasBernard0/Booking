@@ -8,48 +8,52 @@ import {
   formatDDMMYYYYToDate,
 } from 'src/utils/dateUtils';
 import getDefaultSlotsByDay from 'src/utils/constants/slots.constants';
+import { InvalidDateFormatException } from '../errors/InvalidDateFormatException';
 
 @Injectable()
 export class AvailabilityService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async checkAvailability(bookingsDto: BookingDto[]): Promise<boolean> {
-    let areBookingsAvailable = true;
-    bookingsDto.forEach(
-      async (booking) =>
-        (areBookingsAvailable =
-          areBookingsAvailable && (await this.isAvailable(booking))),
-    );
-    return areBookingsAvailable;
+    for (const booking of bookingsDto) {
+      if (!(await this.isAvailable(booking))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public async getAvailableSlotsFor(
     dateString: string,
   ): Promise<AvailableSlot[]> {
-    const startDate = formatDDMMYYYYToDate(dateString);
-    const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 1);
-    const bookingList = await this.getDoneOrPendingBookingsBetween(
-      startDate,
-      endDate,
-    );
-    const defaultAvailableSlotsList: AvailableSlot[] =
-      this.getDefaultAvailableSlotsFor(startDate);
-    const availableSlotsList = defaultAvailableSlotsList.map(
-      (availableSlot) => {
-        const hasConcurrentPeriod = bookingList.some((booking) => {
-          return (
-            booking.startDate < availableSlot.endDate &&
-            booking.endDate > availableSlot.startDate
-          );
-        });
-        return {
-          ...availableSlot,
-          available: !hasConcurrentPeriod,
-        };
-      },
-    );
-    return availableSlotsList;
+    try {
+      const startDate = formatDDMMYYYYToDate(dateString);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 1);
+      const bookingList = await this.getDoneOrPendingBookingsBetween(
+        startDate,
+        endDate,
+      );
+      const defaultAvailableSlotsList: AvailableSlot[] =
+        this.getDefaultAvailableSlotsFor(startDate);
+      const availableSlotsList = defaultAvailableSlotsList.map(
+        (availableSlot) => {
+          const hasConcurrentPeriod = bookingList.some((booking) => {
+            return (
+              booking.startDate < availableSlot.endDate &&
+              booking.endDate > availableSlot.startDate
+            );
+          });
+          return {
+            ...availableSlot,
+            available: !hasConcurrentPeriod,
+          };
+        },
+      );
+      return availableSlotsList;
+    } catch (error) {
+      throw new InvalidDateFormatException(dateString);
+    }
   }
 
   async isAvailable(bookingDto: BookingDto): Promise<boolean> {

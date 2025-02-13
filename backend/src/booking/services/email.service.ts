@@ -1,6 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { EMAIL_TEMPLATES } from 'src/utils/constants/email.constants';
+import { InvalidEmailException } from '../errors/InvalidEmailException';
+import { EmailSendFailedException } from '../errors/EmailSendFailedException';
 
 @Injectable()
 export class EmailService {
@@ -15,12 +17,21 @@ export class EmailService {
     });
   }
 
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   async sendMail(
     to: string,
     subject: string,
     text: string,
     html: string,
   ): Promise<void> {
+    if (!this.isValidEmail(to)) {
+      throw new InvalidEmailException(to);
+    }
+
     const mailOptions: nodemailer.SendMailOptions = {
       from: `"Booking" <${process.env.GMAIL_USER}>`,
       to,
@@ -28,7 +39,12 @@ export class EmailService {
       text,
       html,
     };
-    await this.transporter.sendMail(mailOptions);
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      throw new EmailSendFailedException(to, error.message);
+    }
   }
 
   public async sendBookingConfirmation(
@@ -41,9 +57,7 @@ export class EmailService {
       const html = EMAIL_TEMPLATES.DIGICODE_CODE.html(codes);
       await this.sendMail(to, subject, text, html);
     } catch (error) {
-      throw new InternalServerErrorException(
-        `Echec lors de l'envoi de l'email`,
-      );
+      throw new EmailSendFailedException(to, error.message);
     }
   }
 }

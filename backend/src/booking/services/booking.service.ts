@@ -9,6 +9,10 @@ import { Booking, BookingRequestStatus } from '@prisma/client';
 import { BookingDto } from '../dtos/Booking.dto';
 import { formatDateToFrenchLocale, getHours } from 'src/utils/dateUtils';
 import Stripe from 'stripe';
+import { SlotsNotAvailableException } from '../errors/SlotsNotAvailableException';
+import { InvalidSessionException } from '../errors/InvalidSessionException';
+import { MissingEmailException } from '../errors/MissingEmailException';
+import { CodeGenerationException } from '../errors/CodeGenerationException';
 
 @Injectable()
 export class BookingService {
@@ -26,7 +30,7 @@ export class BookingService {
       bookingRequestDto.bookings,
     );
     if (!isAvailable) {
-      throw new Error('Slots not available');
+      throw new SlotsNotAvailableException();
     }
 
     const sessionId = await this.stripeService.createCheckoutSession(
@@ -58,12 +62,12 @@ export class BookingService {
 
   public async makeABooking(session: Stripe.Checkout.Session) {
     if (!session.id) {
-      throw new Error('Error with the checkout session');
+      throw new InvalidSessionException();
     }
 
     const email = session.customer_details?.email;
     if (!email) {
-      throw new Error('Error with the email');
+      throw new MissingEmailException();
     }
 
     const bookingRequest = await this.prisma.bookingRequest.update({
@@ -82,7 +86,7 @@ export class BookingService {
 
   public async cancelABooking(session: Stripe.Checkout.Session) {
     if (!session.id) {
-      throw new Error('Error with the checkout session');
+      throw new InvalidSessionException();
     }
 
     await this.prisma.bookingRequest.update({
@@ -110,6 +114,9 @@ export class BookingService {
   }
 
   createCode(date: Date): string {
+    if (!process.env.CODE_HASH) {
+      throw new CodeGenerationException();
+    }
     const combinedString = process.env.CODE_HASH + new Date(date).toISOString();
     let hash = 0;
     for (let i = 0; i < combinedString.length; i++) {
